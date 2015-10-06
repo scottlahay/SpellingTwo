@@ -48,6 +48,7 @@ public class PracticeActivity extends Activity {
 
             } catch (InterruptedException e) {
                 // not concerned if this blows chunkies
+                System.out.println("thread bailed");
             }
         }
         progress.dismiss();
