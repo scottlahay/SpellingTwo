@@ -1,354 +1,40 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#0099cc"
-    tools:context=".SpellingTwoActivity">
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="#0099cc"
+             tools:context=".ui.PracticeActivity">
+
+    <!--<Button-->
+    <!--android:gravity="end"-->
+    <!--android:id="@+id/exit"-->
+    <!--style="?android:attr/buttonStyleSmall"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:onClick="exit"-->
+    <!--android:text="Exit"/>-->
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="right">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:onClick="exit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Exit"
-            android:id="@+id/exit" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:orientation="vertical"
+        <TextView
+            android:id="@+id/txtCompletion"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_gravity="bottom">
-
-            <TextView
-                android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:id="@+id/completionLabel" />
-
-            <TextSwitcher
-                android:id="@+id/answerSwitcher"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:keepScreenOn="true"
-                android:textColor="@android:color/black"
-                android:textSize="100sp"
-                android:gravity="right"
-                android:textIsSelectable="false"
-                android:layout_gravity="top"
-                android:layout_marginLeft="10dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="userButtonPress"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="q"
-                android:id="@+id/q" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="userButtonPress"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="w"
-                android:id="@+id/w" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="userButtonPress"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="e"
-                android:id="@+id/e" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="userButtonPress"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="r"
-                android:id="@+id/r" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="userButtonPress"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="y"
-                android:id="@+id/y" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="userButtonPress"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="t"
-                android:id="@+id/t" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="userButtonPress"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="u"
-                android:id="@+id/u" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="userButtonPress"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="i"
-                android:id="@+id/i" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="userButtonPress"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="o"
-                android:id="@+id/o" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="userButtonPress"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="p"
-                android:id="@+id/p" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="userButtonPress"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="a"
-                android:id="@+id/a" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="userButtonPress"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="s"
-                android:id="@+id/s" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="userButtonPress"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="d"
-                android:id="@+id/d" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="userButtonPress"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="f"
-                android:id="@+id/f" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="userButtonPress"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="g"
-                android:id="@+id/g" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="userButtonPress"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="h"
-                android:id="@+id/h" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="userButtonPress"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="j"
-                android:id="@+id/j" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="userButtonPress"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="k"
-                android:id="@+id/k" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="userButtonPress"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="l"
-                android:id="@+id/l" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:checkMark="?android:attr/listChoiceIndicatorMultiple" android:text="me"/>
 
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="userButtonPress"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="z"
-                android:id="@+id/z" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="userButtonPress"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="x"
-                android:id="@+id/x" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="userButtonPress"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="c"
-                android:id="@+id/c" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="userButtonPress"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="v"
-                android:id="@+id/v" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="userButtonPress"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="b"
-                android:id="@+id/b" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="userButtonPress"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="n"
-                android:id="@+id/n" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="userButtonPress"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="m"
-                android:id="@+id/m" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="userButtonPress"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="'"
-                android:id="@+id/apostraphe" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="hint"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Hint"
-                android:id="@+id/hint" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="clearTheWord"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Clear"
-                android:id="@+id/clear" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:onClick="clearTheWord"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Cap"
-                android:id="@+id/capital" />
-
-
-        </LinearLayout>
-
+        <TextSwitcher
+            android:id="@+id/swtAnswer_p"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="top"
+            android:layout_marginLeft="10dp"
+            android:gravity="right"
+            android:keepScreenOn="true"
+            android:textColor="@android:color/holo_red_dark"
+            android:textIsSelectable="false"
+            android:textSize="100sp"   />
     </LinearLayout>
-
 </FrameLayout>
