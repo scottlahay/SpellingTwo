@@ -1,20 +1,19 @@
 package scott.spellingtwo.domain;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import android.os.*;
 
-import scott.spellingtwo.BuildConfig;
+import org.junit.*;
+import org.junit.runner.*;
+import org.robolectric.*;
+import org.robolectric.annotation.*;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
+import scott.spellingtwo.*;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class)
-public class TestSpelling {
+import static junit.framework.Assert.*;
+
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.M)
+public class SpellingTest {
 
     SpellingList list;
     private String word1 = "one";

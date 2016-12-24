@@ -1,21 +1,21 @@
 package scott.spellingtwo.domain;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import android.os.*;
 
-import java.util.List;
+import org.junit.*;
+import org.junit.runner.*;
+import org.robolectric.*;
+import org.robolectric.annotation.*;
 
-import scott.spellingtwo.BuildConfig;
+import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import scott.spellingtwo.*;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class)
-public class TestGoogleSheetsReader {
+import static org.junit.Assert.*;
+
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.M)
+public class GoogleSheetsReaderTest {
 
 
     private FileDownloader downloader;

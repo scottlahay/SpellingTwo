@@ -1,17 +1,19 @@
 package scott.spellingtwo.domain;
 
+import android.os.*;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.junit.runner.*;
+import org.robolectric.*;
+import org.robolectric.annotation.*;
 
-import scott.spellingtwo.BuildConfig;
+import scott.spellingtwo.*;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class)
-public class TestUrlUtil {
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.M)
+public class UrlUtilTest {
 
     @Test
     public void urlsCanBeBuiltCorrectly() {
