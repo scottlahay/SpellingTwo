@@ -1,4 +1,4 @@
-package scott.spellingtwo.domain;
+package com.scott.spellingdomain;
 
 public class UrlUtil {
     public static final String TEST_SHEET_URL = "1kNpXs13m0nvVZDK71ab4yc8RE5Yv-dMeZ_-gt02gue0";

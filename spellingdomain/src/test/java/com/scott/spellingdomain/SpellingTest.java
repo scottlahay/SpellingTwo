@@ -1,18 +1,9 @@
-package scott.spellingtwo.domain;
-
-import android.os.*;
+package com.scott.spellingdomain;
 
 import org.junit.*;
-import org.junit.runner.*;
-import org.robolectric.*;
-import org.robolectric.annotation.*;
-
-import scott.spellingtwo.*;
 
 import static junit.framework.Assert.*;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.M)
 public class SpellingTest {
 
     SpellingList list;
@@ -33,6 +24,7 @@ public class SpellingTest {
         assertEquals(3, list.size());
     }
 
+    @Test
     public void spellingListsCanBeCombined() {
         SpellingList temp = new SpellingList(list);
         assertTrue(temp.contains(word1));

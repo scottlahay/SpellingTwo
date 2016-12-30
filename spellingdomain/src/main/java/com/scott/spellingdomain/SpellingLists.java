@@ -1,12 +1,8 @@
-package scott.spellingtwo.domain;
+package com.scott.spellingdomain;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class SpellingLists {
-
 
     private final HashMap<String, SpellingList> list = new HashMap<>();
 
@@ -22,14 +18,15 @@ public class SpellingLists {
         return list.get(name);
     }
 
-    public static SpellingLists load() {
-        return new SpellingLists(new FileDownloader().download(UrlUtil.KIDS_SPELLING));
-    }
-
     public String[] getAllListNames() {
         Set<String> strings = list.keySet();
         String[] results = strings.toArray(new String[strings.size()]);
-        Arrays.sort(results);
+        Arrays.sort(results, new Comparator<String>() {
+            @Override public int compare(String one, String two) {
+                if (one == null || two == null) { return 0; }
+                return ((Integer) Integer.parseInt(one)).compareTo(Integer.parseInt(two));
+            }
+        });
         return results;
     }
 }

@@ -1,18 +1,8 @@
-package scott.spellingtwo.domain;
-
-import android.os.*;
+package com.scott.spellingdomain;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
-import org.junit.runner.*;
-import org.robolectric.*;
-import org.robolectric.annotation.*;
-
-import scott.spellingtwo.*;
-
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.M)
 public class UrlUtilTest {
 
     @Test

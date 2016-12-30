@@ -1,4 +1,4 @@
-package scott.spellingtwo.domain;
+package com.scott.spellingdomain;
 
 import java.util.ArrayList;
 

@@ -2,6 +2,8 @@ package scott.spellingtwo.domain;
 
 import android.os.*;
 
+import com.scott.spellingdomain.*;
+
 import org.junit.*;
 import org.junit.runner.*;
 import org.robolectric.*;
@@ -9,7 +11,7 @@ import org.robolectric.annotation.*;
 
 import java.util.*;
 
-import scott.spellingtwo.*;
+import scott.spellingtwo.BuildConfig;
 
 import static org.junit.Assert.*;
 

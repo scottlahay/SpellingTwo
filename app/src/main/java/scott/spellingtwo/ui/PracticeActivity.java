@@ -3,6 +3,7 @@ package scott.spellingtwo.ui;
 import android.app.*;
 import android.content.*;
 import android.graphics.*;
+import android.inputmethodservice.*;
 import android.os.*;
 import android.speech.tts.*;
 import android.support.v7.app.AlertDialog;
@@ -10,8 +11,9 @@ import android.support.v7.app.*;
 import android.view.*;
 import android.widget.*;
 
+import com.scott.spellingdomain.*;
+
 import butterknife.*;
-import scott.spellingtwo.*;
 import scott.spellingtwo.domain.*;
 
 import static android.R.anim.*;
@@ -20,10 +22,17 @@ import static android.view.Gravity.*;
 import static android.view.Window.*;
 import static android.view.WindowManager.LayoutParams.*;
 import static android.view.animation.AnimationUtils.*;
+import static com.scott.spellingdomain.UrlUtil.*;
 import static scott.spellingtwo.R.id.*;
+import static scott.spellingtwo.R.layout.*;
 import static scott.spellingtwo.R.style.*;
 
 public class PracticeActivity extends Activity {
+
+    // todo add caching for the lists so the users can use it offline
+    // todo keyboard change return to clear, remove characters that I don't want kids to use.
+    // todo change the list order to numerical;
+
     @BindView(swtAnswer_p) TextSwitcher swtAnswer;
     ProgressDialog progress;
 
@@ -38,28 +47,39 @@ public class PracticeActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(FEATURE_NO_TITLE);
         getWindow().setFlags(FLAG_FULLSCREEN, FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_spelling_two);
+        getWindow().setSoftInputMode(SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        setContentView(activity_spelling_two);
         ButterKnife.bind(this);
+        initTheKeyboard();
         UpdateSpellingListsFromGoogleSheets updating = new UpdateSpellingListsFromGoogleSheets();
         updating.execute();
         waitForTheProgramToLoad();
         speak = new TextToSpeech(this, null);
+
+        // todo move this to a callback
         while (!updating.done) {
             try {
                 Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // not concerned if this blows chunkies
-                System.out.println("thread bailed");
+            } catch (InterruptedException ignored) {
             }
         }
         progress.dismiss();
         haveTheUserChooseHisList();
     }
 
+    public void initTheKeyboard()
+    {
+        Keyboard mKeyboard= new Keyboard(this, scott.spellingtwo.R.xml.my_keyboard);
+        KeyboardView mKeyboardView= (KeyboardView)findViewById(scott.spellingtwo.R.id.keyboardview);
+        mKeyboardView.setKeyboard( mKeyboard );
+        mKeyboardView.setPreviewEnabled(false);
+    }
+
+
     public void waitForTheProgramToLoad() {
         progress = new ProgressDialog(this);
         progress.setTitle("Loading");
-        progress.setMessage("Wait while loading...");
+        progress.setMessage("Please wait while loading...");
         progress.setCancelable(false);
         progress.show();
     }
@@ -68,7 +88,6 @@ public class PracticeActivity extends Activity {
         listNames = lists.getAllListNames();
         textSwitchStuff();
         popUpChooseList();
-        getWindow().setSoftInputMode(SOFT_INPUT_STATE_VISIBLE);
     }
 
     private void updateHeader() {
@@ -88,9 +107,6 @@ public class PracticeActivity extends Activity {
         builder.show();
     }
 
-    private void popUpCurrentWord() { buildDialog("The word is"); }
-
-    private void popUpStartingWord() { buildDialog("Let's get started with ");}
 
     private void buildDialog(String title) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, MyAlertDialogStyle);
@@ -102,6 +118,8 @@ public class PracticeActivity extends Activity {
         view.setGravity(CENTER);
     }
 
+    private void popUpCurrentWord() { buildDialog("The word is"); }
+    private void popUpStartingWord() { buildDialog("Let's get started with ");}
     private void popUpYouFinished() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this,MyAlertDialogStyle);
         builder.setTitle("Finished!");
@@ -132,7 +150,7 @@ public class PracticeActivity extends Activity {
             public View makeView() {
                 TextView myText = new TextView(PracticeActivity.this);
                 myText.setGravity(CENTER);
-                myText.setTextSize(100);
+                myText.setTextSize(50);
                 myText.setTextColor(Color.BLACK);
                 myText.setTextIsSelectable(false);
                 return myText;
@@ -145,7 +163,8 @@ public class PracticeActivity extends Activity {
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_DOWN) {return true;}
-        answerText += event.getDisplayLabel();
+        String text = Character.toString((char)event.getUnicodeChar());
+        answerText += text;
         updateText();
         if (list.isCorrectAnswer(answerText)) {
             if (list.finished()) {
@@ -183,13 +202,14 @@ public class PracticeActivity extends Activity {
         }
         super.onDestroy();
     }
+    public void exit(View view) {finish();}
 
     public class UpdateSpellingListsFromGoogleSheets extends AsyncTask<String, Void, Void> {
         boolean done;
 
         @Override
         protected Void doInBackground(String... params) {
-            lists = SpellingLists.load();
+            lists = new SpellingLists(new FileDownloader().download(KIDS_SPELLING));
             done = true;
             return null;
         }
