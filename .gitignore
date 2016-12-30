@@ -1,6 +1,13 @@
-.gradle
-/local.properties
-.idea
 .DS_Store
-/build
+
+# Gradle
+.gradle/
+build
+/local.properties
+
+# IntelliJ
+.idea
 *.iml
+*.iws
+*.ipr
+classes
