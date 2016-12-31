@@ -7,9 +7,9 @@ import static junit.framework.Assert.*;
 public class SpellingTest {
 
     SpellingList list;
-    private String word1 = "one";
-    private String word2 = "two";
-    private String word3 = "three";
+    String word1 = "one";
+    String word2 = "two";
+    String word3 = "three";
 
     @Before
     public void before() {

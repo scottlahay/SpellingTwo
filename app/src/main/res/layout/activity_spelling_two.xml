@@ -1,12 +1,10 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:background="#0099cc"
-              android:orientation="vertical"
-             tools:context=".ui.PracticeActivity">
-
-
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#0099cc"
+                android:orientation="vertical"
+                tools:context=".ui.SpellingActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,8 +23,8 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_gravity="top"
-            android:layout_marginLeft="10dp"
-            android:gravity="right"
+            android:layout_marginStart="10dp"
+            android:gravity="end"
             android:keepScreenOn="true"
             android:textColor="@android:color/holo_red_dark"
             android:textIsSelectable="false"
@@ -37,8 +35,9 @@
         android:id="@+id/keyboardview"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:visibility="visible" />
+        android:visibility="visible"/>
 
-</LinearLayout>
+</RelativeLayout>

@@ -27,10 +27,10 @@ import static scott.spellingtwo.R.id.*;
 import static scott.spellingtwo.R.layout.*;
 import static scott.spellingtwo.R.style.*;
 
-public class PracticeActivity extends Activity {
+public class SpellingActivity extends Activity {
 
-    // todo add caching for the lists so the users can use it offline
-    // todo keyboard change return to clear, remove characters that I don't want kids to use.
+  // todo finish off the caching changes
+     // todo keyboard change return to clear, remove characters that I don't want kids to use.
     // todo change the list order to numerical;
 
     @BindView(swtAnswer_p) TextSwitcher swtAnswer;
@@ -101,6 +101,7 @@ public class PracticeActivity extends Activity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 list = lists.findList(listNames[which]);
+                dialog.dismiss();
                 popUpStartingWord();
             }
         });
@@ -148,7 +149,7 @@ public class PracticeActivity extends Activity {
         swtAnswer = (TextSwitcher) findViewById(swtAnswer_p);
         swtAnswer.setFactory(new ViewSwitcher.ViewFactory() {
             public View makeView() {
-                TextView myText = new TextView(PracticeActivity.this);
+                TextView myText = new TextView(SpellingActivity.this);
                 myText.setGravity(CENTER);
                 myText.setTextSize(50);
                 myText.setTextColor(Color.BLACK);
