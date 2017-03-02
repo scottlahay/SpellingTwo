@@ -1,0 +1,17 @@
+CREATE TABLE version (
+    key TEXT NOT NULL
+);
+
+SelectAll:
+SELECT * FROM version;
+
+InsertVersion:
+INSERT INTO version(key)
+VALUES (?);
+
+SelectVersionById:
+SELECT * FROM version WHERE key = ?;
+
+DeleteVersion:
+DELETE FROM version WHERE key = ?;
+

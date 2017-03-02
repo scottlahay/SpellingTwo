@@ -1,0 +1,19 @@
+CREATE TABLE word (
+    list_id TEXT NOT NULL,
+    myValue TEXT NOT NULL
+);
+
+SelectAll:
+SELECT * FROM word;
+
+InsertWord:
+INSERT INTO word(list_id,myValue)
+VALUES (?,?);
+
+SelectWordsByListId:
+SELECT * FROM word WHERE list_id = ?;
+
+DeleteWordsByListId:
+DELETE FROM word WHERE list_id = ?;
+
+
