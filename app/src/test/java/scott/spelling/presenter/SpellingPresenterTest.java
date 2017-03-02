@@ -46,12 +46,9 @@ public class SpellingPresenterTest {
 
     @Test
     public void whenTheDataFinishesSyncingThenWeShowTheUserTheSpellingLists() throws Throwable {
-
         presenter.showLists();
         verify(presenter.view).displayLists();
         verify(presenter.view).hideProgress();
-
-
     }
 
 

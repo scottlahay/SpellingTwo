@@ -14,8 +14,8 @@ public class LocalCache {
     public boolean isEmpty() { return false; }
     public String key() { return null; }
 
-    void createSpellingListTable() {db.execSQL("Create table spelling_lists (name text not null );");}
-    void createWordTable() {db.execSQL("Create table words (id text not null, value text not null);");}
+    void createSpellingListTable() {db.execSQL("Create table  if not exists spelling_lists (name text not null );");}
+    void createWordTable() {db.execSQL("Create table  if not exists words (id text not null, value text not null);");}
 
     void saveWordsToDb(String listId, String... wordlist) {
         String sql = "Insert into words values ('%s', '%s');";

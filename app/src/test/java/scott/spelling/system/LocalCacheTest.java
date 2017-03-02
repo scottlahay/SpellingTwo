@@ -14,7 +14,7 @@ import static org.robolectric.RuntimeEnvironment.*;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
-public class DatabaseTest {
+public class LocalCacheTest {
 
     final String key = "list_one";
     LocalCache local;
@@ -28,7 +28,7 @@ public class DatabaseTest {
     }
 
     @Test
-    public void SpellingListsCanBeAddedAndRemovedFromTheDatabase() throws Throwable {
+    public void spellingListsCanBeAddedAndRemovedFromTheDatabase() throws Throwable {
         local.createWordTable();
         local.createSpellingListTable();
 
