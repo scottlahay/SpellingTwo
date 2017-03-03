@@ -1,0 +1,11 @@
+On Load check app loads appropriately when
+- No Network
+- Yes Network but No Internet
+
+When No connectivity check
+- on the first time app should show a help page
+- after we have download the data once then it should load from App storage
+
+When we have connectivity
+- app loads normally when the server doesnt have change
+- app loads with the new data when the server has new data
