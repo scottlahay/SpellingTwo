@@ -1,32 +1,49 @@
 package scott.spelling.model;
 
+import com.google.auto.value.*;
+
 import java.util.*;
 
-public class SpellingLists {
+@AutoValue
+public abstract class SpellingLists {
 
-    private final HashMap<String, SpellingList> list = new HashMap<>();
 
-    public SpellingLists(List<String> csvList) {
+    public abstract HashMap<String, SpellingList> list();
+
+    public static SpellingLists createCsv(List<String>  csvList) {
+      List<SpellingList> temp = new ArrayList<>();
         for (String string : csvList) {
-            String[] temp = string.split(",");
-            String[] words = Arrays.copyOfRange(temp, 1, temp.length);
-            list.put(temp[0], SpellingList.create(temp[0], Arrays.asList(words)));
+            String[] id = string.split(",");
+            String[] words = Arrays.copyOfRange(id, 1, id.length);
+            temp.add(SpellingList.create(id[0], Arrays.asList(words)));
         }
-    }
+        return create(temp);
+      }
+
+
+    public static SpellingLists create(List<SpellingList> lists) {
+
+        HashMap<String, SpellingList> temp = new HashMap<>();
+        for (SpellingList spellingList : lists) {
+            temp.put(spellingList.id(), spellingList);
+        }
+        return new AutoValue_SpellingLists(temp);
+      }
+
 
     public SpellingList findList(String name) {
-        return list.get(name);
+        return list().get(name);
     }
 
     public String[] getAllListNames() {
-        Set<String> strings = list.keySet();
+        Set<String> strings = list().keySet();
         String[] results = strings.toArray(new String[strings.size()]);
-        Arrays.sort(results, new Comparator<String>() {
-            @Override public int compare(String one, String two) {
-                if (one == null || two == null) { return 0; }
-                return ((Integer) Integer.parseInt(one)).compareTo(Integer.parseInt(two));
-            }
-        });
+//        Arrays.sort(results, new Comparator<String>() {
+//            @Override public int compare(String one, String two) {
+//                if (one == null || two == null) { return 0; }
+//                return ((Integer) Integer.parseInt(one)).compareTo(Integer.parseInt(two));
+//            }
+//        });
         return results;
     }
 }

@@ -13,14 +13,14 @@ public class DataRepoTest {
 
     @Test
     public void reposGetDataFromTheServer() throws Throwable {
-        repo.synchData();
+//        repo.synchData(context);
         // test something
 
     }
 
     @Test
     public void reposDoNotGetDataIfTheyAlreadyHaveCurrentData() throws Throwable {
-        repo.synchData();
+//        repo.synchData(context);
 
 
     }

@@ -36,8 +36,8 @@ public class GoogleSheetsReaderTest {
 
     @Test
     public void csvDataCanBeConvertedToSpellingLists() {
-        SpellingList actual = new SpellingLists(csvFile).findList("Test Spelling one");
-        SpellingList expected = SpellingList.create("list_one","one", "two", "three");
+        SpellingList actual = SpellingLists.createCsv(csvFile).findList("Test Spelling one");
+        SpellingList expected = SpellingList.create("Test Spelling one","one", "two", "three");
         assertEquals(expected, actual);
     }
 }

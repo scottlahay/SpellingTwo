@@ -31,21 +31,18 @@ public class LocalCache {
         }
     }
 
-    public List<SpellingList> getLists() {
+    public SpellingLists getLists() {
         String sql = "select * from %s";
         String format = String.format(sql, "spelling_lists");
-        List<SpellingList> spellingLists = asObjectList(new SpellingListMapper(), format);
-        for (SpellingList spellingList : spellingLists) {
-            spellingList.replace(getWords(spellingList.id()));
-        }
-        return spellingLists;
+        SpellingLists all = SpellingLists.create(asObjectList(new SpellingListMapper(), format));
+        return all;
     }
 
     public SpellingList getList(String key) {
         String sql = "select * from %s where name = '%s'";
         String format = String.format(sql, "spelling_lists", key);
         SpellingList spellingList = asObject(new SpellingListMapper(), format);
-       spellingList.replace(getWords(key));
+        spellingList.replace(getWords(key));
         return spellingList;
     }
 
@@ -69,6 +66,13 @@ public class LocalCache {
 
     private <T> T asObject(MyMapper<T> mapper, String sql) {
         return asObjectList(mapper, sql).get(0);
+    }
+    public void init() {
+        createWordTable();
+        createSpellingListTable();
+        String[] wordlist = new String[]{"one", "two", "three"};
+        saveWordsToDb("list_one", wordlist);
+        saveSpellingLists("list_one");
     }
 
     public interface MyMapper<T> {

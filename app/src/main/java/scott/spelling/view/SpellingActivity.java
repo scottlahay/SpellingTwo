@@ -15,6 +15,7 @@ import butterknife.*;
 import scott.spelling.model.*;
 import scott.spelling.presenter.*;
 import scott.spelling.system.*;
+import scott.spellingtwo.*;
 
 import static android.R.anim.*;
 import static android.R.id.*;
@@ -26,9 +27,8 @@ import static scott.spelling.system.UrlUtil.*;
 import static scott.spellingtwo.R.id.*;
 import static scott.spellingtwo.R.layout.*;
 import static scott.spellingtwo.R.style.*;
-import static scott.spellingtwo.R.xml.*;
 
-public class SpellingActivity extends AppCompatActivity implements SpellingPresenter.SpellingView {
+public class SpellingActivity extends Activity {
 
     @BindView(swtAnswer_p) TextSwitcher swtAnswer;
     @BindView(keyboardview) KeyboardView keyboardView;
@@ -58,22 +58,26 @@ public class SpellingActivity extends AppCompatActivity implements SpellingPrese
 
     private void initUi() {
         initTheKeyboard();
-        UpdateSpellingListsFromGoogleSheets updating = new UpdateSpellingListsFromGoogleSheets();
-        updating.execute();
         waitForTheProgramToLoad();
-
-        // todo move this to a callback
-        while (!updating.done) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ignored) {
-            }
-        }
-        haveTheUserChooseHisList();
+////        UpdateSpellingListsFromGoogleSheets updating = new UpdateSpellingListsFromGoogleSheets();
+//        updating.execute();
+//        waitForTheProgramToLoad();
+//
+//        // todo move this to a callback
+//        while (!updating.done) {
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException ignored) {
+//            }
+//        }
+//        haveTheUserChooseHisList();
     }
 
     public void initTheKeyboard() {
-        keyboardView.setKeyboard(new Keyboard(this, my_keyboard));
+        int my_keyboard = R.xml.my_keyboard;
+        Keyboard keyboard = new Keyboard(this, my_keyboard);
+        keyboardView = (KeyboardView) findViewById(R.id.keyboardview);
+        keyboardView.setKeyboard(keyboard);
         keyboardView.setPreviewEnabled(false);
         keyboardView.setOnKeyboardActionListener(new KeyPressListener());
     }
@@ -83,13 +87,6 @@ public class SpellingActivity extends AppCompatActivity implements SpellingPrese
         progress.setTitle("Loading");
         progress.setMessage("Please wait while loading...");
         progress.setCancelable(false);
-        progress.show();
-    }
-
-    private void haveTheUserChooseHisList() {
-        listNames = lists.getAllListNames();
-        textSwitchStuff();
-        popUpChooseList();
     }
 
     private void updateHeader() {
@@ -203,16 +200,21 @@ public class SpellingActivity extends AppCompatActivity implements SpellingPrese
         super.onDestroy();
     }
     public void exit(View view) {finish();}
-    @Override public void displayHelpPage() {
+    public void displayHelpPage() {
 
     }
-    @Override public void displayLists() {
 
+    public void displayLists(SpellingLists spellingLists) {
+        lists = spellingLists;
+        listNames = lists.getAllListNames();
+        textSwitchStuff();
+        popUpChooseList();
     }
-    @Override public void showProgress() {
+
+    public void showProgress() {
         progress.show();
     }
-    @Override public void hideProgress() {
+    public void hideProgress() {
         progress.dismiss();
     }
 
@@ -221,7 +223,7 @@ public class SpellingActivity extends AppCompatActivity implements SpellingPrese
 
         @Override
         protected Void doInBackground(String... params) {
-            lists = new SpellingLists(new FileDownloader().download(KIDS_SPELLING));
+            lists = SpellingLists.createCsv(new FileDownloader().download(KIDS_SPELLING));
             done = true;
             return null;
         }

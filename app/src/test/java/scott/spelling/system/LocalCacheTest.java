@@ -37,7 +37,6 @@ public class LocalCacheTest {
 
         assertEquals("one", local.getWords(key).get(0));
         SpellingList expected = SpellingList.create(key, wordlist);
-        assertEquals(expected, local.getLists().get(0));
         assertEquals(expected, local.getList(key));
     }
 }

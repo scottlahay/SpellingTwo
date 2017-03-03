@@ -24,12 +24,6 @@ public class SpellingTest {
         assertEquals(3, list.size());
     }
 
-    @Test
-    public void spellingListsCanBeCombined() {
-//        SpellingList temp = new SpellingList(list);
-//        assertTrue(temp.contains(word1));
-        fail("not sure this is necessary anymore");
-    }
 
     @Test
     public void theListUnderstandsTheCurrentWord() {
