@@ -8,18 +8,13 @@ import java.util.*;
 public abstract class SpellingList {
 
     public int current;
-    public abstract String id();
-    public abstract List<String> words();
-
     public static SpellingList create(String id, String... words) {
-        ArrayList<String> list = new ArrayList<>();
-        list.addAll(Arrays.asList(words));
-        return create(id, list);
+        return create(id, Utils.asList(words));
     }
-
     public static SpellingList create(String id) { return create(id, new ArrayList<String>()); }
     public static SpellingList create(String id, List<String> words) { return new AutoValue_SpellingList(id, words); }
-
+    public abstract String id();
+    public abstract List<String> words();
     public void nextWord() {
         if (finished()) { reset(); }
         else { current++; }

@@ -7,26 +7,29 @@ import java.util.concurrent.*;
 
 import bolts.*;
 
+import static android.content.Context.*;
+
 public class InternetChecker {
     String key;
     Context context;
 
-    public Task<Boolean> availability() {
-        return Task.call(new RunCheck());
+    public InternetChecker(Context context) {
+        this.context = context;
     }
+
     public boolean listIsOld(LocalCache localCache) {
-        if (localCache.isEmpty()) { return true; }
-        else { return !getKey().equals(localCache.key()); }
+        return localCache.isEmpty() || !getKey().equals(localCache.key());
     }
 
-    private String getKey() {return key;} // yes this will have to connect to google sheets
-
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    public boolean isNetworkAvailable() { // todo for this code to work in the emulator, it looks like I need to do some work.
+        // todo should also check internet connectivity
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
+//        return netInfo != null && netInfo.isConnected(); // todo bring this back
+        return false;
     }
+    private String getKey() {return key;} // yes this will have to connect to google sheets
+    public Task<Boolean> availability() { return Task.call(new RunCheck()); }
 
     private class RunCheck implements Callable<Boolean> {
         @Override public Boolean call() throws Exception {

@@ -15,7 +15,7 @@ import butterknife.*;
 import scott.spelling.model.*;
 import scott.spelling.presenter.*;
 import scott.spelling.system.*;
-import scott.spellingtwo.*;
+import scott.spellingtwo.R;
 
 import static android.R.anim.*;
 import static android.R.id.*;
@@ -23,7 +23,6 @@ import static android.view.Gravity.*;
 import static android.view.Window.*;
 import static android.view.WindowManager.LayoutParams.*;
 import static android.view.animation.AnimationUtils.*;
-import static scott.spelling.system.UrlUtil.*;
 import static scott.spellingtwo.R.id.*;
 import static scott.spellingtwo.R.layout.*;
 import static scott.spellingtwo.R.style.*;
@@ -52,25 +51,13 @@ public class SpellingActivity extends Activity {
         ButterKnife.bind(this);
         speak = new TextToSpeech(this, null);
         initUi();
-        presenter = new SpellingPresenter(this, new InternetChecker(), new DataRepo());
+        presenter = new SpellingPresenter(this, new InternetChecker(this), new DataRepo(this));
         presenter.init();
     }
 
     private void initUi() {
         initTheKeyboard();
         waitForTheProgramToLoad();
-////        UpdateSpellingListsFromGoogleSheets updating = new UpdateSpellingListsFromGoogleSheets();
-//        updating.execute();
-//        waitForTheProgramToLoad();
-//
-//        // todo move this to a callback
-//        while (!updating.done) {
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException ignored) {
-//            }
-//        }
-//        haveTheUserChooseHisList();
     }
 
     public void initTheKeyboard() {
@@ -79,7 +66,7 @@ public class SpellingActivity extends Activity {
         keyboardView = (KeyboardView) findViewById(R.id.keyboardview);
         keyboardView.setKeyboard(keyboard);
         keyboardView.setPreviewEnabled(false);
-        keyboardView.setOnKeyboardActionListener(new KeyPressListener());
+        keyboardView.setOnKeyboardActionListener(new MyKeyPressListener());
     }
 
     public void waitForTheProgramToLoad() {
@@ -114,24 +101,19 @@ public class SpellingActivity extends Activity {
         builder.setPositiveButton("OK", null);
         AppCompatDialog dialog = builder.show();
         TextView view = (TextView) dialog.findViewById(message);
-        view.setGravity(CENTER);
+        if (view != null) { view.setGravity(CENTER); }
     }
 
+    public void popUpNoListsOrInternetConnection() {buildDialog("Sorry, the first time you use this app you need to have an internet connection. Please connect to the Internet"); }
     private void popUpCurrentWord() { buildDialog("The word is"); }
     private void popUpStartingWord() { buildDialog("Let's get started with ");}
     private void popUpYouFinished() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, MyAlertDialogStyle);
         builder.setTitle("Finished!");
         builder.setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                reset();
-            }
+            @Override public void onClick(DialogInterface dialog, int which) { reset(); }
         }).setNegativeButton("Exit", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-            }
+            @Override public void onClick(DialogInterface dialog, int which) { finish(); }
         });
         builder.show();
     }
@@ -199,10 +181,6 @@ public class SpellingActivity extends Activity {
         }
         super.onDestroy();
     }
-    public void exit(View view) {finish();}
-    public void displayHelpPage() {
-
-    }
 
     public void displayLists(SpellingLists spellingLists) {
         lists = spellingLists;
@@ -210,50 +188,13 @@ public class SpellingActivity extends Activity {
         textSwitchStuff();
         popUpChooseList();
     }
+    public void showProgress() { progress.show(); }
+    public void hideProgress() { progress.dismiss(); }
+    public void exit(View view) {finish();}
 
-    public void showProgress() {
-        progress.show();
-    }
-    public void hideProgress() {
-        progress.dismiss();
-    }
-
-    public class UpdateSpellingListsFromGoogleSheets extends AsyncTask<String, Void, Void> {
-        boolean done;
-
-        @Override
-        protected Void doInBackground(String... params) {
-            lists = SpellingLists.createCsv(new FileDownloader().download(KIDS_SPELLING));
-            done = true;
-            return null;
-        }
-    }
-
-    private class KeyPressListener implements KeyboardView.OnKeyboardActionListener {
+    public class MyKeyPressListener extends ScottsKeyPressListener {
         @Override public void onPress(int primaryCode) {
-            char letter = (char) primaryCode;
-            keyPressed(letter);
-        }
-        @Override public void onRelease(int primaryCode) {
-
-        }
-        @Override public void onKey(int primaryCode, int[] keyCodes) {
-
-        }
-        @Override public void onText(CharSequence text) {
-
-        }
-        @Override public void swipeLeft() {
-
-        }
-        @Override public void swipeRight() {
-
-        }
-        @Override public void swipeDown() {
-
-        }
-        @Override public void swipeUp() {
-
+            keyPressed((char) primaryCode);
         }
     }
 }

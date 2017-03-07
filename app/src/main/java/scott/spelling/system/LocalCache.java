@@ -34,8 +34,7 @@ public class LocalCache {
     public SpellingLists getLists() {
         String sql = "select * from %s";
         String format = String.format(sql, "spelling_lists");
-        SpellingLists all = SpellingLists.create(asObjectList(new SpellingListMapper(), format));
-        return all;
+        return SpellingLists.create(asObjectList(new SpellingListMapper(), format));
     }
 
     public SpellingList getList(String key) {
@@ -73,6 +72,9 @@ public class LocalCache {
         String[] wordlist = new String[]{"one", "two", "three"};
         saveWordsToDb("list_one", wordlist);
         saveSpellingLists("list_one");
+    }
+    public Void hasLists() {
+        return null;
     }
 
     public interface MyMapper<T> {

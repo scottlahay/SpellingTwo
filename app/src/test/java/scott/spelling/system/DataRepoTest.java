@@ -8,7 +8,13 @@ public class DataRepoTest {
 
     @Before
     public void before() {
-       repo = new DataRepo();
+//        repo = new DataRepo(context);
+    }
+
+    @Test
+    public void weCanCheckForStoredData() throws Throwable {
+
+//        assertTrue(repo.hasLocalData());
     }
 
     @Test
@@ -21,7 +27,6 @@ public class DataRepoTest {
     @Test
     public void reposDoNotGetDataIfTheyAlreadyHaveCurrentData() throws Throwable {
 //        repo.synchData(context);
-
 
     }
 }

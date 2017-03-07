@@ -2,11 +2,10 @@ package scott.spelling.system;
 
 import org.junit.*;
 
-import scott.spelling.system.*;
-
-import static scott.spelling.system.TestUtils.currentKey;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import static org.robolectric.RuntimeEnvironment.*;
+import static scott.spelling.system.TestUtils.*;
 
 public class InternetCheckerTest {
 
@@ -15,7 +14,7 @@ public class InternetCheckerTest {
 
     @Before
     public void before() throws Exception {
-        checker = new InternetChecker();
+        checker = new InternetChecker(application);
         localCache = mock(LocalCache.class);
         checker.key = currentKey();
     }

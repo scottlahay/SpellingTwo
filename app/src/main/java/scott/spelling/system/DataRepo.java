@@ -11,22 +11,14 @@ import static scott.spelling.system.UrlUtil.*;
 
 public class DataRepo {
 
+    public LocalCache localCache;
     private Callable<SpellingLists> getSpellingLists = new Callable<SpellingLists>() {
         @Override public SpellingLists call() throws Exception {
             return SpellingLists.createCsv(new FileDownloader().download(KIDS_SPELLING));
         }
     };
 
-    public void load() { }
-
-    public Task<SpellingLists> synchData(Context context) {
-        return Task.callInBackground(getSpellingLists);
-    }
-
-    public boolean hasLocalData() {return false;}
-
-    public Task<SpellingLists> getLocalData(Context context) {
-        LocalCache localCache = new LocalCache(OpenHelper.instance(context).getReadableDatabase());
-        return Task.forResult(localCache.getLists());
-    }
+    public DataRepo(Context context) { localCache = new LocalCache(OpenHelper.instance(context).getReadableDatabase()); }
+    public Task<SpellingLists> synchData() { return Task.callInBackground(getSpellingLists); }
+    public Task<SpellingLists> getLocalData() { return Task.forResult(localCache.getLists()); }
 }

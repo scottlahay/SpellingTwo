@@ -26,24 +26,23 @@ public class SpellingPresenter {
         view.hideProgress();
         view.displayLists(spellingLists);
     }
+    private void noData() {
+        view.hideProgress();
+        view.popUpNoListsOrInternetConnection();
+    }
 
-    private class ShowLists implements Continuation<SpellingLists, Object> {
+    class ShowLists implements Continuation<SpellingLists, Object> {
         @Override public Object then(Task<SpellingLists> task) throws Exception {
             spellingLists = task.getResult();
-            showLists();
+            if (spellingLists.empty()) { noData(); }
+            else { showLists(); }
             return null;
         }
     }
 
     class ProcessInternetAvailability implements Continuation<Boolean, Void> {
         @Override public Void then(Task<Boolean> task) throws Exception {
-            if (task.getResult()) { dataRepo.synchData(view).onSuccess(new ShowLists()); }
-            else {
-                if (dataRepo.hasLocalData()) { dataRepo.getLocalData(view).continueWith(new ShowLists()); }
-                else {
-                    view.hideProgress();
-                    view.displayHelpPage(); }
-            }
+            (task.getResult() ? dataRepo.synchData() : dataRepo.getLocalData()).onSuccess(new ShowLists());
             return null;
         }
     }
