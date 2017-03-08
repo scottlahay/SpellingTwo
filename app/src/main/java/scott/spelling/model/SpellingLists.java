@@ -26,24 +26,20 @@ public abstract class SpellingLists {
         }
         return new AutoValue_SpellingLists(temp);
     }
-    public abstract HashMap<String, SpellingList> list();
-    public SpellingList findList(String name) {
-        return list().get(name);
-    }
-
-    public String[] getAllListNames() {
-        Set<String> strings = list().keySet();
-        String[] results = strings.toArray(new String[strings.size()]);
+    public abstract HashMap<String, SpellingList> spellingLists();
+    public String[] listNames() {
+        Set<String> strings = spellingLists().keySet();
+        return strings.toArray(new String[strings.size()]);
 //        Arrays.sort(results, new Comparator<String>() {
 //            @Override public int compare(String one, String two) {
 //                if (one == null || two == null) { return 0; }
 //                return ((Integer) Integer.parseInt(one)).compareTo(Integer.parseInt(two));
 //            }
 //        });
-        return results;
+//        return results;
     }
 
-    public boolean empty() {
-        return isNullOrEmpty(list());
-    }
+    public boolean empty() { return isNullOrEmpty(spellingLists()); }
+    public SpellingList findList(String name) { return spellingLists().get(name); }
+    public SpellingList findList(int index) { return spellingLists().get(listNames()[index]); }
 }

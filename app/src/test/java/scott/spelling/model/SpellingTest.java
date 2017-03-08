@@ -39,7 +39,7 @@ public class SpellingTest {
     @Test
     public void listsUnderstandWhenTheyAreAtTheEnd() {
         list.nextWord();
-        assertTrue(list.finished());
+        assertTrue(list.atEnd());
     }
 
     @Test
