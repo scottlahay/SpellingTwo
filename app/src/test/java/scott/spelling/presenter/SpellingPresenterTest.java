@@ -3,6 +3,7 @@ package scott.spelling.presenter;
 import org.junit.*;
 
 import bolts.*;
+import scott.spelling.model.*;
 import scott.spelling.system.*;
 import scott.spelling.view.*;
 
@@ -88,8 +89,13 @@ public class SpellingPresenterTest {
 
     @Test
     public void whenTheUserChoosesThereListWeDisplayTheFirstWord() throws Throwable {
-        presenter.new ShowFirstWord().then(asTask(spellingList()));
+        SpellingList obj = spellingList();
+        obj.add("four");
+        presenter.new ShowFirstWord().then(asTask(obj));
         verify(presenter.view).showPopUp(anyString(), anyString());
+
+        // we also assign the SpellingList from the database here to
+        assertEquals(obj, presenter.spellingList);
     }
 
     @Test @Ignore //Todo if necessary
@@ -114,9 +120,28 @@ public class SpellingPresenterTest {
 
     @Test
     public void theAnswerGetsUpdatedWhenTheUserPressesAKey() throws Throwable {
-        presenter.keyPressed((char) 77);
-        assertEquals("M", presenter.answerText);
-        verify(presenter.view).setTheAnswer("M");
+        presenter.keyPressed((char) 97);
+        assertEquals("a", presenter.answerText);
+        verify(presenter.view).setTheAnswer("a");
+    }
+
+    @Test
+    public void capitalizeKeySetsTheNextLetterToComeThroughAsACapital() throws Throwable {
+        presenter.keyPressed(SpellingPresenter.CAPS_KEY);
+        presenter.keyPressed((char) 97);
+        assertEquals("A", presenter.answerText);
+
+        // but only the next character
+        presenter.keyPressed((char) 97);
+        assertEquals("Aa", presenter.answerText);
+    }
+
+    @Test
+    public void hittingTheClearClearsTheScreen() throws Throwable {
+        presenter.answerText = "blah";
+        presenter.keyPressed(SpellingPresenter.CLEAR_KEY);
+        assertEquals("", presenter.answerText);
+        verify(presenter.view).setTheAnswer("");
     }
 
     @Test

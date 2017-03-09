@@ -6,12 +6,15 @@ import scott.spelling.system.*;
 import scott.spelling.view.*;
 
 public class SpellingPresenter {
+    public static final char CAPS_KEY = (char) -1;
+    public static final char CLEAR_KEY = (char) -4;
     SpellingActivity view;
     InternetChecker internet;
     DataRepo dataRepo;
     SpellingLists spellingLists;
     SpellingList spellingList;
     String answerText = "";
+    private boolean setAsCap;
 
     public SpellingPresenter(SpellingActivity view, InternetChecker internet, DataRepo dataRepo) {
         this.view = view;
@@ -54,13 +57,26 @@ public class SpellingPresenter {
     }
 
     public void keyPressed(char unicodeChar) {
-        answerText += Character.toString(unicodeChar);
-        if (spellingList.isCorrectAnswer(answerText)) {
-            answerText = "";
-            if (spellingList.atEnd()) { view.popUpYouFinished(); }
-            else {
-                spellingList.nextWord();
-                showHint();
+        if (unicodeChar == CAPS_KEY) {
+            setAsCap = true;
+            return;
+        }
+        if (unicodeChar == CLEAR_KEY) { answerText = ""; }
+        else {
+            String temp = Character.toString(unicodeChar);
+            if (setAsCap) {
+                setAsCap = false;
+                temp = temp.toUpperCase();
+            }
+            answerText += temp;
+
+            if (spellingList.isCorrectAnswer(answerText)) {
+                answerText = "";
+                if (spellingList.atEnd()) { view.popUpYouFinished(); }
+                else {
+                    spellingList.nextWord();
+                    showHint();
+                }
             }
         }
         updateText(answerText);
@@ -90,7 +106,8 @@ public class SpellingPresenter {
 
     class ShowFirstWord implements Continuation<SpellingList, Void> {
         @Override public Void then(Task<SpellingList> task) throws Exception {
-            view.showPopUp("Let's get started with ", task.getResult().currentWord());
+            spellingList = task.getResult();
+            view.showPopUp("Let's get started with ", spellingList.currentWord());
             return null;
         }
     }
