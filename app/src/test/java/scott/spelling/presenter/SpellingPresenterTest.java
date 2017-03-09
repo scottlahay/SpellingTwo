@@ -131,9 +131,14 @@ public class SpellingPresenterTest {
         presenter.keyPressed((char) 97);
         assertEquals("A", presenter.answerText);
 
+        // switches the keys to capital letters
+        verify(presenter.view).shiftKeyboard(true);
+
         // but only the next character
         presenter.keyPressed((char) 97);
         assertEquals("Aa", presenter.answerText);
+// switches the keyboard back to  lower case
+        verify(presenter.view).shiftKeyboard(true);
     }
 
     @Test

@@ -58,6 +58,7 @@ public class SpellingPresenter {
 
     public void keyPressed(char unicodeChar) {
         if (unicodeChar == CAPS_KEY) {
+            view.shiftKeyboard(true);
             setAsCap = true;
             return;
         }
@@ -67,6 +68,7 @@ public class SpellingPresenter {
             if (setAsCap) {
                 setAsCap = false;
                 temp = temp.toUpperCase();
+                view.shiftKeyboard(false);
             }
             answerText += temp;
 

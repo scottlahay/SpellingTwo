@@ -29,6 +29,7 @@ import static scott.spellingtwo.R.style.*;
 public class SpellingActivity extends Activity {
 
     public SpellingPresenter presenter;
+    public Keyboard keyboard;
     @BindView(swtAnswer_p) TextSwitcher swtAnswer;
     @BindView(keyboardview) KeyboardView keyboardView;
     ProgressDialog progress;
@@ -55,11 +56,16 @@ public class SpellingActivity extends Activity {
 
     public void initTheKeyboard() {
         int my_keyboard = R.xml.my_keyboard;
-        Keyboard keyboard = new Keyboard(this, my_keyboard);
+        keyboard = new Keyboard(this, my_keyboard);
         keyboardView = (KeyboardView) findViewById(R.id.keyboardview);
         keyboardView.setKeyboard(keyboard);
         keyboardView.setPreviewEnabled(false);
         keyboardView.setOnKeyboardActionListener(new MyKeyPressListener());
+    }
+
+    public void shiftKeyboard(boolean shifted) {
+        keyboard.setShifted(shifted);
+        keyboardView.invalidateAllKeys();
     }
 
     public void waitForTheProgramToLoad() {
@@ -120,7 +126,6 @@ public class SpellingActivity extends Activity {
         swtAnswer.setInAnimation(loadAnimation(this, slide_in_left));
         swtAnswer.setOutAnimation(loadAnimation(this, slide_out_right));
     }
-
 
     @Override
     protected void onDestroy() {
