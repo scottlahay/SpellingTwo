@@ -5,16 +5,20 @@ import scott.spelling.model.*;
 import scott.spelling.system.*;
 import scott.spelling.view.*;
 
+import static bolts.Task.*;
+
 public class SpellingPresenter {
+
     public static final char CAPS_KEY = (char) -1;
     public static final char CLEAR_KEY = (char) -4;
+    public static final char HINT_KEY = (char) -5;
     SpellingActivity view;
     InternetChecker internet;
     DataRepo dataRepo;
     SpellingLists spellingLists;
     SpellingList spellingList;
     String answerText = "";
-    private boolean setAsCap;
+    boolean setAsCap;
 
     public SpellingPresenter(SpellingActivity view, InternetChecker internet, DataRepo dataRepo) {
         this.view = view;
@@ -24,7 +28,9 @@ public class SpellingPresenter {
 
     public void init() {
         view.showProgress();
-        internet.availability().continueWith(new ProcessInternetAvailability());
+        internet.availability()
+                .onSuccessTask(new ProcessInternetAvailability())
+                .onSuccess(new ShowLists(), UI_THREAD_EXECUTOR);
     }
 
     public void showLists() {
@@ -39,27 +45,24 @@ public class SpellingPresenter {
 
     public void userSelectsThereList(int listIndex) {
         spellingList = spellingLists.findList(listIndex);
-        dataRepo.getLocalList(spellingList.id()).continueWith(new ShowFirstWord());
+        dataRepo.getLocalList(spellingList.id()).continueWith(new ShowFirstWord(), UI_THREAD_EXECUTOR);
     }
 
-    public void updateHeader(SpellingList spellingList) {
-        view.updateHeader(spellingList.current + "/" + spellingList.size());
-    }
-
-    public void showHint() {
-        view.speak(spellingList.currentWord());
-        view.showPopUp("The word is", spellingList.currentWord());
-    }
+    public void showHint() { view.showPopUp("The word is", spellingList.currentWord()); }
 
     public void updateText(String answerText) {
         view.setTheAnswer(answerText);
-        updateHeader(spellingList);
+        view.setCompletionProgress(spellingList.primaryProgress(), spellingList.secondaryProgress());
     }
 
     public void keyPressed(char unicodeChar) {
         if (unicodeChar == CAPS_KEY) {
             view.shiftKeyboard(true);
             setAsCap = true;
+            return;
+        }
+        if (unicodeChar == HINT_KEY) {
+            showHint();
             return;
         }
         if (unicodeChar == CLEAR_KEY) { answerText = ""; }
@@ -71,7 +74,6 @@ public class SpellingPresenter {
                 view.shiftKeyboard(false);
             }
             answerText += temp;
-
             if (spellingList.isCorrectAnswer(answerText)) {
                 answerText = "";
                 if (spellingList.atEnd()) { view.popUpYouFinished(); }
@@ -90,8 +92,10 @@ public class SpellingPresenter {
         showHint();
     }
 
-    class ShowLists implements Continuation<SpellingLists, Object> {
-        @Override public Object then(Task<SpellingLists> task) throws Exception {
+    public void setListTitle() { view.setListTitle(spellingList.id()); }
+
+    class ShowLists implements Continuation<SpellingLists, Void> {
+        @Override public Void then(Task<SpellingLists> task) throws Exception {
             spellingLists = task.getResult();
             if (spellingLists.empty()) { noData(); }
             else { showLists(); }
@@ -99,16 +103,16 @@ public class SpellingPresenter {
         }
     }
 
-    class ProcessInternetAvailability implements Continuation<Boolean, Void> {
-        @Override public Void then(Task<Boolean> task) throws Exception {
-            (task.getResult() ? dataRepo.syncData() : dataRepo.getLocalData()).onSuccess(new ShowLists());
-            return null;
+    class ProcessInternetAvailability implements Continuation<Boolean, Task<SpellingLists>> {
+        @Override public Task<SpellingLists> then(Task<Boolean> task) throws Exception {
+            return task.getResult() ? dataRepo.syncData() : dataRepo.getLocalData();
         }
     }
 
     class ShowFirstWord implements Continuation<SpellingList, Void> {
         @Override public Void then(Task<SpellingList> task) throws Exception {
             spellingList = task.getResult();
+            setListTitle();
             view.showPopUp("Let's get started with ", spellingList.currentWord());
             return null;
         }

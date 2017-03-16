@@ -20,23 +20,35 @@ public class LocalCacheTest {
     LocalCache local;
     SQLiteDatabase db;
 
-    String[] wordlist = new String[]{"one", "two", "three"};
-    @Before
-    public void before() {
+    String[] wordList = new String[]{"one", "two", "three"};
+
+    @Test  // this test is weird in that the database seems to have issues when I run multiple units tests,
+    // So I'm taking the quick and sleazy solution here by just putting it all into one unit test
+    public void spellingListsCanBeAddedAndRemovedFromTheDatabase() throws Throwable {
         db = OpenHelper.instance(application).getWritableDatabase();
         local = new LocalCache(db);
+
+        local.createTables();
+
+        local.saveWordsToDb(key, wordList);
+        local.saveSpellingLists(key);
+        String syncKey = "my_sync_key";
+        local.saveSyncKey(syncKey);
+
+        assertEquals(syncKey, local.getSyncKey());
+        assertEquals("one", local.getWords(key).get(0));
+        SpellingList expected = SpellingList.create(key, wordList);
+        assertEquals(expected, local.getList(key));
     }
 
     @Test
-    public void spellingListsCanBeAddedAndRemovedFromTheDatabase() throws Throwable {
-        local.createWordTable();
-        local.createSpellingListTable();
+    public void appUnderstandsWhenTheDatabaseIsEmpty() throws Throwable {
+        fail();
+    }
 
-        local.saveWordsToDb(key, wordlist);
-        local.saveSpellingLists(key);
+    @Test
+    public void keyShouldHaveAValueFromTheDatabase() throws Throwable {
+        fail();
 
-        assertEquals("one", local.getWords(key).get(0));
-        SpellingList expected = SpellingList.create(key, wordlist);
-        assertEquals(expected, local.getList(key));
     }
 }

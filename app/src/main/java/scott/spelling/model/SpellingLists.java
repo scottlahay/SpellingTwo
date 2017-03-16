@@ -29,7 +29,9 @@ public abstract class SpellingLists {
     public abstract HashMap<String, SpellingList> spellingLists();
     public String[] listNames() {
         Set<String> strings = spellingLists().keySet();
-        return strings.toArray(new String[strings.size()]);
+        String[] strings1 = strings.toArray(new String[strings.size()]);
+        Arrays.sort(strings1);
+        return strings1;
 //        Arrays.sort(results, new Comparator<String>() {
 //            @Override public int compare(String one, String two) {
 //                if (one == null || two == null) { return 0; }

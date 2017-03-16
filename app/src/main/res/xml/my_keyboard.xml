@@ -81,6 +81,10 @@
             android:keyLabel="CLEAR"
             android:keyWidth="25%p"/>
         <Key
+            android:codes="-5"
+            android:keyLabel="HINT"
+            android:keyWidth="25%p"/>
+        <Key
             android:codes="63"
             android:keyLabel="\?"/>
         <Key

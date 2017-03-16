@@ -34,4 +34,7 @@ public abstract class SpellingList {
 
     public int size() { return words().size(); }
     public String currentWord() { return words().get(current); }
+    public int primaryProgress() { return calcProgress(current); }
+    public int secondaryProgress() { return calcProgress(current + 1); }
+    private int calcProgress(int index) {return (int) ((double) index / (double) size() * 100);}
 }

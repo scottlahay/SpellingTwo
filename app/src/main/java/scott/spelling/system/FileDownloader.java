@@ -1,8 +1,12 @@
 package scott.spelling.system;
 
+import android.util.*;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
+
+import static android.content.ContentValues.*;
 
 public class FileDownloader {
 
@@ -20,7 +24,7 @@ public class FileDownloader {
             }
             return lines;
         } catch (Exception e) {
-            String temp = "";
+            Log.d(TAG, "download: ");
         }
         return null;
     }

@@ -9,6 +9,7 @@ import scott.spelling.view.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import static scott.spelling.presenter.SpellingPresenter.*;
 import static scott.spelling.system.TestUtils.*;
 import static scott.spelling.utils.MockingUtils.*;
 
@@ -24,9 +25,12 @@ public class SpellingPresenterTest {
         presenter = new SpellingPresenter(view, checker, dataRepo);
         presenter.spellingLists = spellingLists();
         presenter.spellingList = presenter.spellingLists.findList(0);
-        when(presenter.internet.availability()).thenReturn(mock(Task.class));
-        when(presenter.dataRepo.syncData()).thenReturn(mock(Task.class));
-        when(presenter.dataRepo.getLocalData()).thenReturn(mock(Task.class));
+        Task mock = mock(Task.class);
+        when(mock.onSuccess((Continuation) any())).thenReturn(mock);
+        when(mock.onSuccessTask((Continuation) any())).thenReturn(mock);
+        when(presenter.internet.availability()).thenReturn(mock);
+        when(presenter.dataRepo.syncData()).thenReturn(mock);
+        when(presenter.dataRepo.getLocalData()).thenReturn(mock);
     }
 
     @Test
@@ -98,15 +102,9 @@ public class SpellingPresenterTest {
         assertEquals(obj, presenter.spellingList);
     }
 
-    @Test @Ignore //Todo if necessary
-    public void theUserSeesAHeaderAtTheTopShowingHowFarIntoTheTestTheyAre() throws Throwable {
-        presenter.updateHeader(null);
-    }
-
     @Test
-    public void whenTheUserIsNotSureWhatTheWordIsWeGiveThemAHintBySpeakingAndSayingTheWord() throws Throwable {
+    public void theUserCanAskToSeeTheWord() throws Throwable {
         presenter.showHint();
-        verify(presenter.view).speak(anyString());
         verify(presenter.view).showPopUp(anyString(), anyString());
     }
 
@@ -114,8 +112,8 @@ public class SpellingPresenterTest {
     public void whenTheUserEntersACharacterWeChangeTheDisplayToShowTheNewCharacter() throws Throwable {
         presenter.updateText("");
         verify(presenter.view).setTheAnswer(anyString());
-        // we update the header to, for when the user completes the word
-        verify(presenter.view).updateHeader(anyString());
+        // we update the progress bar to, for when the user completes the word
+        verify(presenter.view).setCompletionProgress(anyInt(), anyInt());
     }
 
     @Test
@@ -127,7 +125,7 @@ public class SpellingPresenterTest {
 
     @Test
     public void capitalizeKeySetsTheNextLetterToComeThroughAsACapital() throws Throwable {
-        presenter.keyPressed(SpellingPresenter.CAPS_KEY);
+        presenter.keyPressed(CAPS_KEY);
         presenter.keyPressed((char) 97);
         assertEquals("A", presenter.answerText);
 
@@ -142,11 +140,17 @@ public class SpellingPresenterTest {
     }
 
     @Test
-    public void hittingTheClearClearsTheScreen() throws Throwable {
+    public void theClearKeyClearsTheAnswer() throws Throwable {
         presenter.answerText = "blah";
-        presenter.keyPressed(SpellingPresenter.CLEAR_KEY);
+        presenter.keyPressed(CLEAR_KEY);
         assertEquals("", presenter.answerText);
         verify(presenter.view).setTheAnswer("");
+    }
+
+    @Test
+    public void theHintKeyPopsUpTheHintText() throws Throwable {
+        presenter.keyPressed(HINT_KEY);
+        verify(presenter.view).showPopUp(anyString(), anyString());
     }
 
     @Test
@@ -181,5 +185,11 @@ public class SpellingPresenterTest {
         verify(presenter.view).setTheAnswer(anyString());
         // show the user the word
         verify(presenter.view).showPopUp(anyString(), anyString());
+    }
+
+    @Test
+    public void theUserSeesTheNameOfTheSpellingListAtTheTopOfTheScreen() throws Throwable {
+        presenter.setListTitle();
+        verify(presenter.view).setListTitle(anyString());
     }
 }

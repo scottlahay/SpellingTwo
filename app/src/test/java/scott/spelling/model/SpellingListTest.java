@@ -26,4 +26,14 @@ public class SpellingListTest {
         list.nextWord();
         assertFalse(list.atStart());
     }
+
+    @Test
+    public void theListCanFindThereCompletionPercentages() throws Throwable {
+
+        assertEquals(0, list.primaryProgress());
+        list.nextWord();
+        assertEquals(33, list.primaryProgress());
+        list.nextWord();
+        assertEquals(66, list.primaryProgress());
+    }
 }

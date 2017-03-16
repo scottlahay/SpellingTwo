@@ -5,59 +5,81 @@ import android.content.*;
 import android.graphics.*;
 import android.inputmethodservice.*;
 import android.os.*;
-import android.speech.tts.*;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.*;
+import android.util.*;
 import android.view.*;
 import android.widget.*;
 
+import com.akexorcist.roundcornerprogressbar.*;
+import com.mikepenz.materialdrawer.*;
+
 import butterknife.*;
+import scott.spelling.R;
 import scott.spelling.presenter.*;
 import scott.spelling.system.*;
-import scott.spellingtwo.R;
 
 import static android.R.anim.*;
-import static android.speech.tts.TextToSpeech.*;
 import static android.view.Gravity.*;
 import static android.view.Window.*;
 import static android.view.WindowManager.LayoutParams.*;
 import static android.view.animation.AnimationUtils.*;
-import static scott.spellingtwo.R.id.*;
-import static scott.spellingtwo.R.layout.*;
-import static scott.spellingtwo.R.style.*;
+import static scott.spelling.R.id.*;
+import static scott.spelling.R.layout.*;
+import static scott.spelling.R.style.*;
 
-public class SpellingActivity extends Activity {
+public class SpellingActivity extends AppCompatActivity {
+
+    //@todo love the cloud background and gears here https://github.com/lj-3d/GearLoadingProject
 
     public SpellingPresenter presenter;
     public Keyboard keyboard;
-    @BindView(swtAnswer_p) TextSwitcher swtAnswer;
-    @BindView(keyboardview) KeyboardView keyboardView;
+    @BindView(txt_title) TextView txtTitle;
+    @BindView(swt_Answer_p) TextSwitcher swtAnswer;
+    @BindView(keyboard_view_p) KeyboardView keyboardView;
+    @BindView(prg_list_progress_p) RoundCornerProgressBar prgListProgress;
     ProgressDialog progress;
-    TextToSpeech speak;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(FEATURE_NO_TITLE);
         getWindow().setFlags(FLAG_FULLSCREEN, FLAG_FULLSCREEN);
         getWindow().setSoftInputMode(SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        setContentView(activity_spelling_two);
-        ButterKnife.bind(this);
-        speak = new TextToSpeech(this, null);
+        setContentView(activity_spelling);
+        try {
+            throw new NullPointerException();
+//            ButterKnife.bind(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        tempInitUi();
         initUi();
         presenter = new SpellingPresenter(this, new InternetChecker(this), new DataRepo(this));
         presenter.init();
     }
+    private void tempInitUi() { // @TODO this is temporary till I can figure out why ButterKnife Is having issues, Probably something to do with the proguard setup,
+        keyboardView = (KeyboardView) findViewById(R.id.keyboard_view_p);
+        prgListProgress = (RoundCornerProgressBar) findViewById(prg_list_progress_p);
+        swtAnswer = (TextSwitcher) findViewById(swt_Answer_p);
+    }
 
     void initUi() {
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.my_action_bar);
+        new DrawerBuilder().withActivity(this).build();
+        txtTitle = (TextView) findViewById(R.id.txt_title);
         initTheKeyboard();
         waitForTheProgramToLoad();
         textSwitchStuff();
+
     }
 
     public void initTheKeyboard() {
+
         int my_keyboard = R.xml.my_keyboard;
         keyboard = new Keyboard(this, my_keyboard);
-        keyboardView = (KeyboardView) findViewById(R.id.keyboardview);
+
         keyboardView.setKeyboard(keyboard);
         keyboardView.setPreviewEnabled(false);
         keyboardView.setOnKeyboardActionListener(new MyKeyPressListener());
@@ -75,7 +97,10 @@ public class SpellingActivity extends Activity {
         progress.setCancelable(false);
     }
 
-    public void updateHeader(String text) { ((TextView) findViewById(txtCompletion)).setText(text); }
+    public void setCompletionProgress(int currentProgress, int secondaryProgress) {
+        prgListProgress.setProgress(currentProgress);
+//        prgListProgress.setSecondaryProgress(secondaryProgress);
+    }
 
     public void popUpChooseList(String[] lists) {
         new AlertDialog.Builder(this, MyAlertDialogStyle)
@@ -97,7 +122,11 @@ public class SpellingActivity extends Activity {
                 .setPositiveButton("OK", null).show();
 
         TextView view = (TextView) dialog.findViewById(android.R.id.message);
-        if (view != null) { view.setGravity(CENTER); }
+
+        if (view != null) {
+            view.setTextSize(50);
+            view.setGravity(CENTER);
+        }
     }
 
     public void popUpYouFinished() {
@@ -112,7 +141,7 @@ public class SpellingActivity extends Activity {
     }
 
     public void textSwitchStuff() {
-        swtAnswer = (TextSwitcher) findViewById(swtAnswer_p);
+        swtAnswer = (TextSwitcher) findViewById(swt_Answer_p);
         swtAnswer.setFactory(new ViewSwitcher.ViewFactory() {
             public View makeView() {
                 TextView myText = new TextView(SpellingActivity.this);
@@ -127,24 +156,14 @@ public class SpellingActivity extends Activity {
         swtAnswer.setOutAnimation(loadAnimation(this, slide_out_right));
     }
 
-    @Override
-    protected void onDestroy() {
-        if (speak != null) {
-            speak.stop();
-            speak.shutdown();
-        }
-        super.onDestroy();
-    }
-
-    void keyPressed(char unicodeChar) { presenter.keyPressed(unicodeChar); }
+    public void keyPressed(char unicodeChar) { presenter.keyPressed(unicodeChar); }
     public void setTheAnswer(String answerText) {swtAnswer.setCurrentText(answerText);}
-    public void hint(View v) { presenter.showHint(); }
-    public int speak(String word) {return speak.speak(word, QUEUE_FLUSH, null, null);}
     public void showProgress() { progress.show(); }
     public void hideProgress() { progress.dismiss(); }
-
+    public void setListTitle(String title) { txtTitle.setText(title);}
     public class MyKeyPressListener extends ScottsKeyPressListener {
         @Override public void onPress(int primaryCode) {
+            Log.d("dddddddd", "onPress: ");
             keyPressed((char) primaryCode);
         }
     }

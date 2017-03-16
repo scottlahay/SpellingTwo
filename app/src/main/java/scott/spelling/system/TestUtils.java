@@ -6,6 +6,7 @@ import scott.spelling.model.*;
 
 import static scott.spelling.model.Utils.*;
 
+@SuppressWarnings("SameReturnValue")
 public class TestUtils {
     public static String currentKey() { return "validKey"; }
     public static String oldKey() { return "oldKey"; }

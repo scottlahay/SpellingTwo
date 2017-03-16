@@ -1,38 +1,59 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#0099cc"
                 android:orientation="vertical"
                 tools:context="scott.spelling.view.SpellingActivity">
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Change"/>
+
     <LinearLayout
+        android:id="@+id/layout_test"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
-        <TextView
-            android:id="@+id/txtCompletion"
+        <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+            android:id="@+id/prg_list_progress_p"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-            android:text="me"/>
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            app:rcProgressColor="@color/accent"
+            app:rcSecondaryProgressColor="@color/accent_light"
+            />
 
         <TextSwitcher
-            android:id="@+id/swtAnswer_p"
+            android:id="@+id/swt_Answer_p"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_gravity="top"
             android:layout_marginStart="10dp"
             android:gravity="end"
             android:keepScreenOn="true"
-            android:textColor="@android:color/holo_red_dark"
             android:textIsSelectable="false"
-            android:textSize="100sp"/>
+            android:textSize="80sp"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/layout_choose_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hi"/>
+
+    </LinearLayout>
     <android.inputmethodservice.KeyboardView
-        android:id="@+id/keyboardview"
+        android:id="@+id/keyboard_view_p"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
