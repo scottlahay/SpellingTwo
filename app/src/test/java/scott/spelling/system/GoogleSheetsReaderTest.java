@@ -43,7 +43,7 @@ public class GoogleSheetsReaderTest {
     @Test
     public void csvDataCanBeConvertedToSpellingLists() {  //@TODO ensure this still works after changing the id
         if (isNetworkAvailable) {
-            SpellingList expected = spellingList();
+            SpellingList expected = spellingListWeekOne();
             assertEquals(expected, SpellingLists.createCsv(csvFile).findList(expected.id()));
         }
     }

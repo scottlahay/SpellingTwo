@@ -1,17 +1,28 @@
 package scott.spelling.presenter;
 
+import android.util.*;
+
+import org.greenrobot.eventbus.*;
+
+import java.util.*;
+
 import bolts.*;
+import scott.spelling.*;
 import scott.spelling.model.*;
 import scott.spelling.system.*;
 import scott.spelling.view.*;
 
 import static bolts.Task.*;
+import static scott.spelling.model.Utils.*;
+import static scott.spelling.view.SpellingActivity.*;
 
 public class SpellingPresenter {
 
     public static final char CAPS_KEY = (char) -1;
     public static final char CLEAR_KEY = (char) -4;
     public static final char HINT_KEY = (char) -5;
+    public EventBus eventBus;
+    public AppData appData;
     SpellingActivity view;
     InternetChecker internet;
     DataRepo dataRepo;
@@ -20,17 +31,22 @@ public class SpellingPresenter {
     String answerText = "";
     boolean setAsCap;
 
-    public SpellingPresenter(SpellingActivity view, InternetChecker internet, DataRepo dataRepo) {
+    public SpellingPresenter(SpellingActivity view, InternetChecker internet, DataRepo dataRepo, EventBus eventBus) {
         this.view = view;
         this.internet = internet;
         this.dataRepo = dataRepo;
+        this.eventBus = eventBus;
     }
 
     public void init() {
         view.showProgress();
-        internet.availability()
-                .onSuccessTask(new ProcessInternetAvailability())
-                .onSuccess(new ShowLists(), UI_THREAD_EXECUTOR);
+        dataRepo.getAppData().onSuccess(new LoadAppData());
+        eventBus.register(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void event(ListChangedEvent event) {
+        startTestFor(event.listName);
     }
 
     public void showLists() {
@@ -43,9 +59,12 @@ public class SpellingPresenter {
         view.showPopUp("Sorry, the first time you use this app you need to have an internet connection. Please connect to the Internet", "");
     }
 
-    public void userSelectsThereList(int listIndex) {
-        spellingList = spellingLists.findList(listIndex);
+    public void startTestFor(String testName) {
+        view.showTest();
+        view.hideProgress();
+        spellingList = spellingLists.findList(testName);
         dataRepo.getLocalList(spellingList.id()).continueWith(new ShowFirstWord(), UI_THREAD_EXECUTOR);
+        dataRepo.updateAppData(appData);
     }
 
     public void showHint() { view.showPopUp("The word is", spellingList.currentWord()); }
@@ -93,9 +112,16 @@ public class SpellingPresenter {
     }
 
     public void setListTitle() { view.setListTitle(spellingList.id()); }
+    public void changeSpellingList() {
+        Map<String, List<String>> map = new HashMap<>();
+        map.put("Grade 6", Arrays.asList(spellingLists.listNames()));
+        view.showListChooser(asList("Grade 6"), map);
+        view.hideTest();
+    }
 
     class ShowLists implements Continuation<SpellingLists, Void> {
         @Override public Void then(Task<SpellingLists> task) throws Exception {
+            Log.d(TAG_IT, "then: SpellingPresenter showLists");
             spellingLists = task.getResult();
             if (spellingLists.empty()) { noData(); }
             else { showLists(); }
@@ -103,9 +129,30 @@ public class SpellingPresenter {
         }
     }
 
+    class ShowTest implements Continuation<SpellingLists, Void> {
+        @Override public Void then(Task<SpellingLists> task) throws Exception {
+            spellingLists = task.getResult();
+            if (spellingLists.empty()) { noData(); }
+            else { startTestFor(spellingList.id()); }
+            return null;
+        }
+    }
+
     class ProcessInternetAvailability implements Continuation<Boolean, Task<SpellingLists>> {
         @Override public Task<SpellingLists> then(Task<Boolean> task) throws Exception {
-            return task.getResult() ? dataRepo.syncData() : dataRepo.getLocalData();
+            return task.getResult() ? dataRepo.syncDataCheck() : dataRepo.getLocalLists();
+        }
+    }
+
+    class LoadAppData implements Continuation<AppData, Void> {
+        @Override public Void then(Task<AppData> task) throws Exception {
+            Log.d(TAG_IT, "then: SpellingPresenter LoadAppData");
+            appData = task.getResult();
+            internet.availability()
+                    .onSuccessTask(new ProcessInternetAvailability())
+                    .continueWith(new ShowTest(), UI_THREAD_EXECUTOR);
+
+            return null;
         }
     }
 

@@ -21,4 +21,7 @@ public class Utils {
         if (isNullOrEmpty(items)) { return null; }
         return items.get(items.size() - 1);
     }
+    public static boolean isNullOrEmpty(String s) {
+        return s == null || s.isEmpty();
+    }
 }

@@ -24,6 +24,6 @@ public class SpellingListsTest {
 
     @Test
     public void aListCanBeFoundByItsIndexNumber() throws Throwable {
-        assertEquals(spellingList(), lists.findList(0));
+        assertEquals(spellingListWeekOne(), lists.findList(0));
     }
 }

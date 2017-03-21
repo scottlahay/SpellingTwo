@@ -11,7 +11,7 @@ public class SpellingListTest {
 
     @Before
     public void before() {
-        list = spellingList();
+        list = spellingListWeekOne();
     }
 
     @Test

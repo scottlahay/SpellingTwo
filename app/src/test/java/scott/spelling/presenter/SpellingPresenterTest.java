@@ -1,8 +1,10 @@
 package scott.spelling.presenter;
 
+import org.greenrobot.eventbus.*;
 import org.junit.*;
 
 import bolts.*;
+import scott.spelling.*;
 import scott.spelling.model.*;
 import scott.spelling.system.*;
 import scott.spelling.view.*;
@@ -22,42 +24,43 @@ public class SpellingPresenterTest {
         InternetChecker checker = mock(InternetChecker.class);
         SpellingActivity view = mock(SpellingActivity.class);
         DataRepo dataRepo = mock(DataRepo.class);
-        presenter = new SpellingPresenter(view, checker, dataRepo);
+        presenter = new SpellingPresenter(view, checker, dataRepo, mock(EventBus.class));
         presenter.spellingLists = spellingLists();
         presenter.spellingList = presenter.spellingLists.findList(0);
         Task mock = mock(Task.class);
         when(mock.onSuccess((Continuation) any())).thenReturn(mock);
         when(mock.onSuccessTask((Continuation) any())).thenReturn(mock);
         when(presenter.internet.availability()).thenReturn(mock);
-        when(presenter.dataRepo.syncData()).thenReturn(mock);
-        when(presenter.dataRepo.getLocalData()).thenReturn(mock);
+        when(presenter.dataRepo.syncDataCheck()).thenReturn(mock);
+        when(presenter.dataRepo.getLocalLists()).thenReturn(mock);
+        when(presenter.dataRepo.getLocalList(anyString())).thenReturn(mock(Task.class));
+        Task t = asTask(appData());
+        when(presenter.dataRepo.getAppData()).thenReturn(t);
     }
 
     @Test
     public void userSeesAWaitScreenTillWeHaveSpellingListsToShowThem() throws Throwable {
         presenter.init();
         verify(presenter.view).showProgress();
-        // this is also a good time to check the internet availability
-        verify(presenter.internet).availability();
     }
 
     @Test
     public void appsThatHaveNoInternetConnectionsCheckForLocalData() throws Throwable {
         presenter.new ProcessInternetAvailability().then(asTask(false));
-        verify(presenter.dataRepo).getLocalData();
+        verify(presenter.dataRepo).getLocalLists();
     }
 
     @Test
     public void appsThatHaveAnInternetConnectionSyncWithTheDataOnTheServer() throws Throwable {
         presenter.new ProcessInternetAvailability().then(asTask(true));
-        verify(presenter.dataRepo).syncData();
+        verify(presenter.dataRepo).syncDataCheck();
     }
 
     @Test
     public void appsThatHaveNoInternetConnectionButHavePreviouslyStoredDataLoadTheApp() throws Throwable {
-        when(presenter.dataRepo.getLocalData()).thenReturn(mock(Task.class));
+        when(presenter.dataRepo.getLocalLists()).thenReturn(mock(Task.class));
         presenter.new ProcessInternetAvailability().then(asTask(false));
-        verify(presenter.dataRepo).getLocalData();
+        verify(presenter.dataRepo).getLocalLists();
     }
 
     @Test
@@ -84,16 +87,15 @@ public class SpellingPresenterTest {
 
     @Test
     public void whenTheUserChoosesThereListWePullItFromTheLocalCache() throws Throwable {
-        when(presenter.dataRepo.getLocalList(anyString())).thenReturn(mock(Task.class));
 
-        presenter.userSelectsThereList(0);
-        assertEquals(spellingList(), presenter.spellingList);
-        verify(presenter.dataRepo).getLocalList(spellingList().id());
+        presenter.startTestFor(spellingListWeekOne().id());
+        assertEquals(spellingListWeekOne(), presenter.spellingList);
+        verify(presenter.dataRepo).getLocalList(spellingListWeekOne().id());
     }
 
     @Test
     public void whenTheUserChoosesThereListWeDisplayTheFirstWord() throws Throwable {
-        SpellingList obj = spellingList();
+        SpellingList obj = spellingListWeekOne();
         obj.add("four");
         presenter.new ShowFirstWord().then(asTask(obj));
         verify(presenter.view).showPopUp(anyString(), anyString());
@@ -191,5 +193,25 @@ public class SpellingPresenterTest {
     public void theUserSeesTheNameOfTheSpellingListAtTheTopOfTheScreen() throws Throwable {
         presenter.setListTitle();
         verify(presenter.view).setListTitle(anyString());
+    }
+
+    @Test
+    public void usersSeeTheLastListThatTheyHadOpenWhenTheyOpenTheApp() throws Throwable {
+        presenter.init();
+        verify(presenter.dataRepo).getAppData();
+    }
+
+    @Test
+    public void whenUsersSelectANewList() throws Throwable {
+        String testName = spellingListWeekTwo().id();
+        presenter.event(new ListChangedEvent(testName));
+        // update the View
+        verify(presenter.view).showTest();
+        // current list is updated
+        assertEquals(testName, presenter.spellingList.id());
+        // database is updated
+        verify(presenter.dataRepo).updateAppData((AppData) any());
+
+
     }
 }

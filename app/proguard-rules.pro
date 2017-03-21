@@ -23,3 +23,8 @@
 -keep class butterknife.*
 -keepclasseswithmembernames class * { @butterknife.* <methods>; }
 -keepclasseswithmembernames class * { @butterknife.* <fields>; }
+
+-keep class .R
+-keep class **.R$* {
+    <fields>;
+}
