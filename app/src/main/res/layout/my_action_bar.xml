@@ -1,28 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              android:background="@color/primary_dark"
               android:gravity="center"
               android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/txt_title"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/layoutSpellingTestTitle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Spelling"
-        android:textColor="#ffffff"
-        android:textSize="22sp"/>
+        android:orientation="horizontal">
 
-    <com.mikepenz.iconics.view.IconicsImageView
-        android:id="@+id/img_arrow"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="5dp"
-        android:padding="5dp"
-        app:iiv_color="@color/white"
-        app:iiv_icon="gmd-arrow-drop-down"/>
+        <TextView
+            android:id="@+id/txtTitle"
+            style="@style/app_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Spelling"/>
 
+        <com.mikepenz.iconics.view.IconicsImageView
+            android:id="@+id/imgArrow"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="5dp"
+            android:padding="5dp"
+            app:iiv_color="@color/icons"
+
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutChooseListTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/app_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Choose Your Spelling List"/>
+
+    </LinearLayout>
 </LinearLayout>

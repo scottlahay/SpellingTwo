@@ -16,10 +16,10 @@ public class DataRepoTest {
 
     @Test
     public void asSoonAsWeHaveAnInternetConnectionWeCheckToSeeIfWeNeedToPullInTheLatestSpellingLists() throws Throwable {
-
-        repo.syncDataCheck();
-        verify(repo.localCache).getAppData();
-        verify(repo.syncDataCheck());
+        fail();
+//        repo.syncDataCheck();
+//        verify(repo.localCache).getAppData();
+//        verify(repo.syncDataCheck());
 //                if key is empty
 //                        get the lists from the server
 //                        save them to the local cache

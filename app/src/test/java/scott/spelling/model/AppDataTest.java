@@ -18,7 +18,7 @@ public class AppDataTest {
     @Test
     public void appDataIsOutdatedIfAnyOfTheFieldsAreMissingData() throws Throwable {
         assertFalse(appData.outdated());
-        boolean outdated = AppData.create("", "").outdated();
+        boolean outdated = new AppData("", "").outdated();
         assertTrue(outdated);
     }
 }

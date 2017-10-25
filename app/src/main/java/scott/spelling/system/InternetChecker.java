@@ -15,14 +15,12 @@ public class InternetChecker {
 
     public InternetChecker(Context context) { this.context = context; }
 
-    public boolean listIsOld(LocalCache localCache) { return localCache.isEmpty() || !getKey().equals(localCache.key()); }
-
     public boolean isNetworkAvailable() { // TODO for this code to work in the emulator, it looks like I need to do some work.
         // TODO should also check internet connectivity
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
 
-        boolean testing = true;
+        boolean testing = false;
         return !testing && netInfo != null && netInfo.isConnected();
     }
 

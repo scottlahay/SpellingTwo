@@ -10,11 +10,9 @@ import org.robolectric.annotation.*;
 import java.util.*;
 
 import scott.spelling.*;
-import scott.spelling.model.*;
 
 import static org.junit.Assert.*;
 import static org.robolectric.RuntimeEnvironment.*;
-import static scott.spelling.system.TestUtils.*;
 import static scott.spelling.system.UrlUtil.*;
 
 @RunWith(RobolectricTestRunner.class)
@@ -40,11 +38,4 @@ public class GoogleSheetsReaderTest {
         }
     }
 
-    @Test
-    public void csvDataCanBeConvertedToSpellingLists() {  //@TODO ensure this still works after changing the id
-        if (isNetworkAvailable) {
-            SpellingList expected = spellingListWeekOne();
-            assertEquals(expected, SpellingLists.createCsv(csvFile).findList(expected.id()));
-        }
-    }
 }

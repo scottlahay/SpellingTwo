@@ -13,7 +13,7 @@ public class SpellingTest {
 
     @Before
     public void before() {
-        list = SpellingList.create("id", word1, word2);
+        list = new SpellingList("id", word1, word2);
     }
 
     @Test

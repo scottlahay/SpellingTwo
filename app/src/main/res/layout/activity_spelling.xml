@@ -3,26 +3,39 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/primary"
                 android:orientation="vertical"
-                tools:context="scott.spelling.view.SpellingActivity">
+                tools:context="scott.spelling.view.MainActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/myToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <include layout="@layout/my_action_bar"/>
+    </android.support.v7.widget.Toolbar>
 
     <LinearLayout
-        android:id="@+id/layout_test"
+        android:id="@+id/layoutTest"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
-            android:id="@+id/prg_list_progress_p"
+            android:id="@+id/prgListProgress"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_margin="10dp"
-            app:rcProgressColor="@color/accent"
+            app:rcProgressColor="@color/color_progress_bar"
             app:rcSecondaryProgressColor="@color/accent_light"
             />
 
         <TextSwitcher
-            android:id="@+id/swt_Answer_p"
+            android:id="@+id/swtAnswer"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_gravity="top"
@@ -31,17 +44,30 @@
             android:keepScreenOn="true"
             android:textIsSelectable="false"
             android:textSize="80sp"/>
+
+        <com.mikepenz.iconics.view.IconicsImageView
+            android:id="@+id/imgCheck"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_gravity="end"
+            android:layout_marginStart="5dp"
+            android:padding="5dp"
+            android:textAlignment="textEnd"
+            android:visibility="gone"
+            app:iiv_color="@color/accent"
+            />
+
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layout_choose_list"
+        android:id="@+id/layoutChooseList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="gone">
 
         <ExpandableListView
-            android:id="@+id/lst_Spelling_Lists"
+            android:id="@+id/lstSpellingLists"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="@android:color/darker_gray"
@@ -49,9 +75,10 @@
             android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"/>
 
     </LinearLayout>
+
     <android.inputmethodservice.KeyboardView
-        android:id="@+id/keyboard_view_p"
-        android:layout_width="fill_parent"
+        android:id="@+id/keyboardView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:focusable="true"

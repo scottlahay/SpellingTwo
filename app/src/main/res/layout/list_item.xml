@@ -6,6 +6,7 @@
 
     <TextView
         android:id="@+id/expandedListItem"
+        style="@style/choose_test_list_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="10dp"

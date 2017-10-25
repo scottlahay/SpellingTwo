@@ -16,7 +16,7 @@ import scott.spelling.view.*;
 @RunWith(Parameterized.class)
 public class SpellingUiTest extends GreenCoffeeTest {
     @Rule
-    public ActivityTestRule<SpellingActivity> activity = new ActivityTestRule<>(SpellingActivity.class);
+    public ActivityTestRule<MainActivity> activity = new ActivityTestRule<>(MainActivity.class);
 
     public SpellingUiTest(ScenarioConfig scenarioConfig) {
         super(scenarioConfig);

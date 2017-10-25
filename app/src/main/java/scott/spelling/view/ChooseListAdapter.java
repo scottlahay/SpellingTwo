@@ -11,7 +11,6 @@ import java.util.*;
 import scott.spelling.*;
 
 import static android.content.Context.*;
-import static android.graphics.Typeface.*;
 import static scott.spelling.R.id.*;
 import static scott.spelling.R.layout.*;
 
@@ -37,21 +36,21 @@ public class ChooseListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int listPosition, final int expandedListPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         final String expandedListText = (String) getChild(listPosition, expandedListPosition);
         if (convertView == null) { convertView = ((LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE)).inflate(R.layout.list_item, null); }
-        TextView txtListName = (TextView) convertView.findViewById(expandedListItem);
+        TextView txtListName = convertView.findViewById(expandedListItem);
         txtListName.setText(expandedListText);
         txtListName.setOnClickListener(new ListSelected());
         return convertView;
     }
 
     @Override
-    public View getGroupView(int listPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+    public View getGroupView(int listPosition, boolean isExpanded, View view, ViewGroup parent) {
         String listTitle = (String) getGroup(listPosition);
-        if (convertView == null) { convertView = ((LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE)).inflate(list_group, null); }
-        TextView txtGrade = (TextView) convertView.findViewById(R.id.listTitle);
-        txtGrade.setTypeface(null, BOLD);
+        if (view == null) { view = ((LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE)).inflate(list_group, null); }
+        TextView txtGrade = view.findViewById(gradeTitle);
         txtGrade.setText(listTitle);
-        return convertView;
+        return view;
     }
+
     @Override public long getChildId(int listPosition, int expandedListPosition) { return expandedListPosition; }
     @Override public int getChildrenCount(int listPosition) { return testNames.get(grades.get(listPosition)).size(); }
     @Override public Object getGroup(int listPosition) { return grades.get(listPosition); }
