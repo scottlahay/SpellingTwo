@@ -5,9 +5,9 @@ import org.junit.*;
 import static org.junit.Assert.*;
 import static scott.spelling.system.TestUtils.*;
 
-public class SpellingListTest {
+public class WeekTest {
 
-    SpellingList list;
+    Week list;
 
     @Before
     public void before() {

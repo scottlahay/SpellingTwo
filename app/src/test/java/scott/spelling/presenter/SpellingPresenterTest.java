@@ -92,12 +92,12 @@ public class SpellingPresenterTest {
 
 //    @Test
 //    public void whenTheUserChoosesThereListWeDisplayTheFirstWord() throws Throwable {
-//        SpellingList obj = spellingListWeekOne();
+//        Week obj = spellingListWeekOne();
 //        obj.add("four");
 //        presenter.new StartSpellingTest().then(asTask(obj));
 //        verify(presenter.view).showPopUp(anyString(), anyString(), listener);
 //
-//        // we also assign the SpellingList from the database here to
+//        // we also assign the Week from the database here to
 //        assertEquals(obj, presenter.spellingList);
 //    }
 
@@ -200,7 +200,7 @@ public class SpellingPresenterTest {
 
     @Test
     public void whenUsersSelectANewList() throws Throwable {
-        String testName = spellingListWeekTwo().getId();
+        String testName = spellingListWeekTwo().getName();
         presenter.event(new ListChangedEvent(testName));
         // update the View
         verify(presenter.getView()).showTest();

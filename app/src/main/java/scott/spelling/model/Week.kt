@@ -3,10 +3,10 @@ package scott.spelling.model
 import com.google.firebase.database.Exclude
 import java.util.*
 
-data class SpellingList(var id: String = "", var words: MutableList<String> = ArrayList()) {
+data class Week(var name: String = "", var words: MutableList<String> = ArrayList()) {
 
     @get:Exclude
-    var current: Int = 1
+    var currentWord: Int = 1
 
     constructor(id: String, vararg words: String) : this(id, Utils.asList(*words))
 
@@ -15,7 +15,7 @@ data class SpellingList(var id: String = "", var words: MutableList<String> = Ar
             setAtStart()
         }
         else {
-            current++
+            currentWord++
         }
     }
 
@@ -29,19 +29,19 @@ data class SpellingList(var id: String = "", var words: MutableList<String> = Ar
     }
 
     fun setAtEnd() {
-        current = lastIndex()
+        currentWord = lastIndex()
     }
 
     fun atEnd(): Boolean {
-        return current == lastIndex()
+        return currentWord == lastIndex()
     }
 
     fun setAtStart() {
-        current = 0
+        currentWord = 0
     }
 
     fun atStart(): Boolean {
-        return current == 0
+        return currentWord == 0
     }
 
     operator fun contains(word: String): Boolean {
@@ -61,11 +61,11 @@ data class SpellingList(var id: String = "", var words: MutableList<String> = Ar
     }
 
     fun currentWord(): String {
-        return words[current]
+        return words[currentWord]
     }
 
     fun primaryProgress(): Int {
-        return calcProgress(current)
+        return calcProgress(currentWord)
     }
 
     fun calcProgress(index: Int): Int {

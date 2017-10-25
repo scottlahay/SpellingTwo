@@ -6,14 +6,14 @@ import static junit.framework.Assert.*;
 
 public class SpellingTest {
 
-    SpellingList list;
+    Week list;
     String word1 = "one";
     String word2 = "two";
     String word3 = "three";
 
     @Before
     public void before() {
-        list = new SpellingList("id", word1, word2);
+        list = new Week("id", word1, word2);
     }
 
     @Test

@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var drawer: Drawer
 
     var closeApp: DialogInterface.OnClickListener = DialogInterface.OnClickListener { _, _ -> finish() }
-    private var grade = 2
+    var grade = 2
     lateinit var badgeStyle: BadgeStyle
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,19 +56,21 @@ class MainActivity : AppCompatActivity() {
         window.setSoftInputMode(SOFT_INPUT_STATE_ALWAYS_HIDDEN)
         setContentView(activity_spelling)
         initUi()
-        //        presenter = new SpellingPresenter(this, new InternetChecker(this), EventBus.getDefault());
-        //        presenter.init();
+        presenter = SpellingPresenter(this)
 
         val viewModel = ViewModelProviders.of(this).get(SpellingViewModel::class.java)
-        viewModel.grades.observe(this, Observer<Grades> { fillTheBurgerMenu(it) })
+        viewModel.grades.observe(this, Observer<Grades> { gradesHaveBeenUpdated(it) })
 
+    }
+
+    private fun gradesHaveBeenUpdated(grades: Grades?) {
+        presenter!!.updateTheGrades(grades)
+        fillTheBurgerMenu(grades)
     }
 
     internal fun initUi() {
 
         badgeStyle = BadgeStyle().withColorRes(R.color.primary).withTextColorRes(R.color.primary_text)
-        imgArrow!!.setIcon(GoogleMaterial.Icon.gmd_arrow_drop_down)  // hmm its not displaying the iconify image set in the xml, So setting it explicitly here
-        imgArrow!!.setOnClickListener(ChangeSpellingListListener())
         imgCheck!!.setIcon(GoogleMaterial.Icon.gmd_check)
         initTheKeyboard()
         waitForTheProgramToLoad()
@@ -100,14 +102,9 @@ class MainActivity : AppCompatActivity() {
                 .build()
     }
 
-    private fun drawer(grade: String): PrimaryDrawerItem {
-        return PrimaryDrawerItem().withName("Grade " + grade)
-    }
+    private fun drawer(grade: String) = PrimaryDrawerItem().withName("Grade " + grade)
 
-    private fun drawer2(grade: String): PrimaryDrawerItem {
-
-        return PrimaryDrawerItem().withBadge("X").withBadgeStyle(badgeStyle).withName("Grade " + grade)
-    }
+    private fun drawer2(grade: String) = PrimaryDrawerItem().withBadge("X").withBadgeStyle(badgeStyle).withName("Grade " + grade)
 
     fun initTheKeyboard() {
         keyboard = Keyboard(this, R.xml.my_keyboard)
@@ -116,9 +113,7 @@ class MainActivity : AppCompatActivity() {
         captureTyping()
     }
 
-    fun captureTyping() {
-        keyboardView!!.setOnKeyboardActionListener(MyKeyPressListener())
-    }
+    fun captureTyping() = keyboardView!!.setOnKeyboardActionListener(MyKeyPressListener())
 
     fun stopCapturingTyping() {
         keyboardView!!.setOnKeyboardActionListener(object : ScottsKeyPressListener() {
