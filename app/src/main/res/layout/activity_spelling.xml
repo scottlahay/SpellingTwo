@@ -14,10 +14,8 @@
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
-        <include layout="@layout/my_action_bar"/>
-    </android.support.v7.widget.Toolbar>
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:titleTextColor="@color/md_white_1000"/>
 
     <LinearLayout
         android:id="@+id/layoutTest"
@@ -56,23 +54,6 @@
             android:visibility="gone"
             app:iiv_color="@color/accent"
             />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layoutChooseList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <ExpandableListView
-            android:id="@+id/lstSpellingLists"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@android:color/darker_gray"
-            android:dividerHeight="0.5dp"
-            android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"/>
 
     </LinearLayout>
 

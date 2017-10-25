@@ -30,7 +30,6 @@ import com.mikepenz.materialdrawer.holder.StringHolder
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 import kotlinx.android.synthetic.main.activity_spelling.*
-import kotlinx.android.synthetic.main.my_action_bar.*
 import scott.spelling.R
 import scott.spelling.R.layout.activity_spelling
 import scott.spelling.R.style.MyAlertDialogStyle
@@ -55,6 +54,7 @@ class MainActivity : AppCompatActivity() {
         window.setFlags(FLAG_FULLSCREEN, FLAG_FULLSCREEN)
         window.setSoftInputMode(SOFT_INPUT_STATE_ALWAYS_HIDDEN)
         setContentView(activity_spelling)
+        setSupportActionBar(myToolbar)
         initUi()
         presenter = SpellingPresenter(this)
 
@@ -75,7 +75,6 @@ class MainActivity : AppCompatActivity() {
         initTheKeyboard()
         waitForTheProgramToLoad()
         textSwitchStuff()
-        txtTitle!!.setOnClickListener(ChangeSpellingListListener())
     }
 
     fun fillTheBurgerMenu(grades: Grades?) {
@@ -85,7 +84,7 @@ class MainActivity : AppCompatActivity() {
 
         drawer = DrawerBuilder()
                 .withActivity(this)
-                .withToolbar(myToolbar!!)
+                .withToolbar(myToolbar)
                 .withHeader(R.layout.my_material_drawer)
                 .withDrawerItems(temp)
                 .withSelectedItemByPosition(2)
@@ -184,26 +183,12 @@ class MainActivity : AppCompatActivity() {
         progress.dismiss()
     }
 
-    fun showTest() {
-        showView(GONE, VISIBLE)
-    }
-
-    fun setListTitle(title: String) {
-        txtTitle!!.text = title
-    }
-
-    fun showListChooser(grades: List<String>, testNames: Map<String, List<String>>) {
-        lstSpellingLists!!.setAdapter(ChooseListAdapter(this, grades, testNames))
-        lstSpellingLists!!.expandGroup(0)
-        showView(VISIBLE, GONE)
-    }
+    fun showTest() = showView(GONE, VISIBLE)
 
     private fun showView(chooseListVisibility: Int, spellingTestVisibility: Int) {
-        setWifiState(chooseListVisibility == VISIBLE)
-        layoutChooseList!!.visibility = chooseListVisibility
-        layoutChooseListTitle!!.visibility = chooseListVisibility
+//        setWifiState(chooseListVisibility == VISIBLE)
         layoutTest!!.visibility = spellingTestVisibility
-        layoutSpellingTestTitle!!.visibility = spellingTestVisibility
+//        layoutSpellingTestTitle!!.visibility = spellingTestVisibility
         keyboardView!!.visibility = spellingTestVisibility
     }
 

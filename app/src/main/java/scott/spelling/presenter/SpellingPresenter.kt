@@ -89,7 +89,7 @@ class SpellingPresenter(var view: MainActivity) {
     }
 
     fun setListTitle() {
-        view.setListTitle("Week ${grades!!.theCurrentGrade().theCurrentWeek().name}")
+        view.title = "Week ${grades!!.theCurrentGrade().theCurrentWeek().name}"
     }
 
     fun changeSpellingList() {
