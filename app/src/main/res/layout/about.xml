@@ -1,97 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<FrameLayout
+<android.support.constraint.ConstraintLayout
+    android:id="@+id/layoutAboutBackground"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/layoutAboutBackground"
+    <TextView
+        android:id="@+id/txtCreatedBy"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Created by Skipstone Studios"
+        android:textColor="@color/whiteColor"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/txtComments"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
-        <TextView
-            android:id="@+id/txtCreatedBy"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Created by Skipstone Studios"
-            android:textColor="@color/whiteColor"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+    <TextView
+        android:id="@+id/txtComments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="144dp"
+        android:gravity="center"
+        android:paddingTop="16dp"
+        android:text="For comments, suggestions and software development"
+        android:textColor="@color/whiteColor"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-        <TextView
-            android:id="@+id/txtComments"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingTop="16dp"
-            android:text="For comments, suggestions and software development"
-            android:textColor="@color/whiteColor"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtCreatedBy"
-            />
+    <TextView
+        android:id="@+id/txtEmailLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="sendEmail"
+        android:paddingTop="16dp"
+        android:text="Email:"
+        android:textColor="@color/whiteColor"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@id/txtComments"/>
 
-        <TextView
-            android:id="@+id/txtEmailLbl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="sendEmail"
-            android:paddingEnd="8dp"
-            android:paddingTop="16dp"
-            android:text="Email:"
-            android:textColor="@color/whiteColor"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toStartOf="@id/txtEmail"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtComments"/>
+    <TextView
+        android:id="@+id/txtEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="sendEmail"
+        android:paddingTop="16dp"
+        android:text="info.skipstone@gmail.com"
+        android:textColor="@color/primary"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@id/txtComments"/>
 
-        <TextView
-            android:id="@+id/txtEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="sendEmail"
-            android:paddingTop="16dp"
-            android:text="info.skipstone@gmail.com"
-            android:textColor="@color/primary"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/txtEmailLbl"
-            app:layout_constraintTop_toBottomOf="@id/txtComments"/>
+    <TextView
+        android:id="@+id/txtLaunchWebsiteLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="launchWebsite"
+        android:paddingEnd="8dp"
+        android:paddingTop="16dp"
+        android:text="Website:"
+        android:textColor="@color/whiteColor"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@id/txtEmail"/>
 
-        <TextView
-            android:id="@+id/txtLaunchWebsiteLbl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="launchWebsite"
-            android:paddingEnd="8dp"
-            android:paddingTop="16dp"
-            android:text="Website:"
-            android:textColor="@color/whiteColor"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toStartOf="@id/txtLaunchWebsite"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtEmail"/>
+    <TextView
+        android:id="@+id/txtLaunchWebsite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="launchWebsite"
+        android:paddingTop="16dp"
+        android:text="http://skipstonestudios.net"
+        android:textColor="@color/primary"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@id/txtEmail"/>
 
-        <TextView
-            android:id="@+id/txtLaunchWebsite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="launchWebsite"
-            android:paddingTop="16dp"
-            android:text="http://skipstonestudios.net"
-            android:textColor="@color/primary"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtEmail"/>
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="115dp"/>
 
-    </android.support.constraint.ConstraintLayout>
-</FrameLayout>
+</android.support.constraint.ConstraintLayout>
