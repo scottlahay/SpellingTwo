@@ -1,14 +1,12 @@
 <resources>
-    <color name="primary">#3F51B5</color>
-    <color name="primary_blue_text">#3F51B5</color>
-    <color name="primary_dark">#303F9F</color>
-    <color name="primary_light">#03A9F4</color>
-    <color name="accent">#448AFF</color>
-    <color name="primary_text">#3F51B5</color>
-    <color name="secondary_text">#ffffff</color>
-    <color name="icons">#FFFFFF</color>
-    <color name="divider">#BDBDBD</color>
-    <color name="accent_light">@color/accent</color>
-    <color name="color_progress_bar">@color/primary_light</color>
-    <color name="color_dialog_buttons">@color/primary_light</color>
+    <color name="primaryColor">#0d47a1</color>
+    <color name="primaryLightColor">#5e92f3</color>
+    <color name="primaryDarkColor">#003c8f</color>
+    <color name="secondaryColor">#00c853</color>
+    <color name="secondaryLightColor">#5efc82</color>
+    <color name="secondaryDarkColor">#009624</color>
+    <color name="primaryTextColor">#ffffff</color>
+    <color name="secondaryTextColor">#ffffff</color>
+    <color name="linkColor">#0000EE</color>
+    <color name="whiteColor">#FFFFFF</color>
 </resources>

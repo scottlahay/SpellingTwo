@@ -5,8 +5,19 @@ import com.google.firebase.database.Exclude
 class Grades(val grades: List<Grade> = listOf()) {
 
     @get:Exclude
-    var currentGrade: Int = 0
+    var current: Int = 0
 
-    fun theCurrentGrade() = grades[currentGrade]
+    fun currentGrade() = grades[current]
+    fun currentWeek() = currentGrade().currentWeek()
+    fun currentWord() = currentWeek().currentWord()
+    fun changeGrade(name: String) = grades.forEachIndexed { index, grade -> if (grade.name == name) current = index }
+    fun changeWeek(name: String) = currentGrade().changeWeek(name)
+
+    fun gradeNames(): ArrayList<String> {
+        val temp = ArrayList<String>()
+        grades.forEach { temp.add(it.name) }
+        return temp
+    }
+
 
 }

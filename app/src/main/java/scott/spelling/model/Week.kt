@@ -6,7 +6,7 @@ import java.util.*
 data class Week(var name: String = "", var words: MutableList<String> = ArrayList()) {
 
     @get:Exclude
-    var currentWord: Int = 1
+    var current: Int = 0
 
     constructor(id: String, vararg words: String) : this(id, Utils.asList(*words))
 
@@ -15,7 +15,7 @@ data class Week(var name: String = "", var words: MutableList<String> = ArrayLis
             setAtStart()
         }
         else {
-            currentWord++
+            current++
         }
     }
 
@@ -29,19 +29,19 @@ data class Week(var name: String = "", var words: MutableList<String> = ArrayLis
     }
 
     fun setAtEnd() {
-        currentWord = lastIndex()
+        current = lastIndex()
     }
 
     fun atEnd(): Boolean {
-        return currentWord == lastIndex()
+        return current == lastIndex()
     }
 
     fun setAtStart() {
-        currentWord = 0
+        current = 0
     }
 
     fun atStart(): Boolean {
-        return currentWord == 0
+        return current == 0
     }
 
     operator fun contains(word: String): Boolean {
@@ -61,14 +61,18 @@ data class Week(var name: String = "", var words: MutableList<String> = ArrayLis
     }
 
     fun currentWord(): String {
-        return words[currentWord]
+        return words[current]
     }
 
     fun primaryProgress(): Int {
-        return calcProgress(currentWord)
+        return calcProgress(current)
     }
 
     fun calcProgress(index: Int): Int {
         return (index.toDouble() / size().toDouble() * 100).toInt()
+    }
+
+    fun reset() {
+        current = 0
     }
 }

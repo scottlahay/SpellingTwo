@@ -15,21 +15,14 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
-# Retain generated class which implement Unbinder.
--keep public class * implements butterknife.Unbinder { public <init>(**, android.view.View); }
+-dontwarn com.akexorcist.roundcornerprogressbar.TextRoundCornerProgressBar
 
-# Prevent obfuscation of types which use ButterKnife annotations since the simple name
-# is used to reflectively look up the generated ViewBinding.
--keep class butterknife.*
--keepclasseswithmembernames class * { @butterknife.* <methods>; }
--keepclasseswithmembernames class * { @butterknife.* <fields>; }
-
--keep class .R
--keep class **.R$* {
-    <fields>;
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
 }
-
-
 # Add this global rule
 -keepattributes Signature
 
@@ -39,3 +32,4 @@
 -keepclassmembers class com.yourcompany.models.** {
   *;
 }
+
