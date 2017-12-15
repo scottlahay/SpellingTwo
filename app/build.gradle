@@ -54,10 +54,13 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar', '*.apk'], dir: 'libs')
     implementation "android.arch.lifecycle:extensions:$lifecycle_version"
+    implementation 'co.zsmb:materialdrawer-kt:1.2.2'
     implementation 'com.afollestad.material-dialogs:core:0.9.5.0'
     implementation 'com.akexorcist:RoundCornerProgressBar:2.0.3'
     implementation "com.android.support:appcompat-v7:$compat_version"
     implementation "com.android.support:design:$compat_version"
+    implementation "com.android.support:recyclerview-v7:$compat_version"
+    implementation "com.android.support:support-annotations:$compat_version"
     implementation "com.android.support:support-v4:$compat_version"
     implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta3'
     implementation 'com.chibatching.kotpref:kotpref:2.2.0'
@@ -70,15 +73,12 @@ dependencies {
     implementation 'com.mikepenz:google-material-typeface:3.0.1.0.original@aar'
     implementation 'com.mikepenz:iconics-core:3.0.0@aar'
     implementation 'com.mikepenz:iconics-views:3.0.0@aar'
-    implementation('com.mikepenz:materialdrawer:5.9.5@aar') { transitive = true }
     implementation 'com.parse.bolts:bolts-tasks:1.4.0'
     implementation 'org.greenrobot:eventbus:3.0.0'
     implementation "org.jetbrains.anko:anko:$anko_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     kapt "android.arch.lifecycle:compiler:$lifecycle_version"
     kapt 'com.github.bumptech.glide:compiler:4.4.0'
-
-
 }
 
 

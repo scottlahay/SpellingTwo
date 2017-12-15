@@ -2,6 +2,7 @@ package scott.spelling.presenter
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import com.chibatching.kotpref.KotprefModel
 import scott.spelling.model.Grades
 import scott.spelling.system.FirebaseRepository
 
@@ -38,14 +39,14 @@ class SpellingViewModel : ViewModel() {
 
     fun setGrade(name: String) {
         grades.changeGrade(name)
-        FirebaseRepository.UserPreferences.grade = name
+        UserPreferences.grade = name
         currentInfo()
         goToLandingPage()
     }
 
     fun setWeek(name: String) {
         grades.changeWeek(name)
-        FirebaseRepository.UserPreferences.week = name
+        UserPreferences.week = name
         currentInfo()
         goToLandingPage()
     }
@@ -114,7 +115,10 @@ class SpellingViewModel : ViewModel() {
                 }
             }
         }
+
+
     }
+
 
     companion object {
         val CAPS_KEY = (-1).toChar()
@@ -139,4 +143,9 @@ class SpellingViewModel : ViewModel() {
         showPage.value = MainPage.ABOUT
     }
 
+}
+
+object UserPreferences : KotprefModel() {
+    var grade by stringPref(default = "5")
+    var week by stringPref(default = "1")
 }

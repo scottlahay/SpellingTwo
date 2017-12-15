@@ -22,6 +22,7 @@ import android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
 import android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
 import android.view.animation.AnimationUtils.loadAnimation
 import android.widget.TextView
+import co.zsmb.materialdrawerkt.builders.drawer
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.module.AppGlideModule
@@ -141,6 +142,10 @@ class MainActivity : AppCompatActivity() {
     fun drawer(text: String) = PrimaryDrawerItem().withName(text)!!
 
     fun changeDrawerData(items: List<String>) {
+        drawer {}
+    }
+
+    fun changeDrawerDataOld(items: List<String>) {
         drawer = DrawerBuilder()
                 .withActivity(this)
                 .withDrawerWidthDp(150)
