@@ -5,13 +5,15 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
 
 android {
+    signingConfigs {
+    }
     compileSdkVersion 27
     buildToolsVersion '27.0.1'
     defaultConfig {
         applicationId "scott.spellingtwo"
-        minSdkVersion 21
+        minSdkVersion 19
         targetSdkVersion 27
-        versionCode 24
+        versionCode 28
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -23,13 +25,11 @@ android {
             minifyEnabled false
         }
     }
-
     flavorDimensions "flav_d"
     productFlavors {
         // When building a variant that uses this flavor, the following configurations
         // override those in the defaultConfig block.
         dev {
-
             minSdkVersion 23
             resConfigs "en", "xxhdpi"
             dimension "flav_d"
@@ -52,32 +52,34 @@ android {
 
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar', '*.apk'], dir: 'libs')
     implementation "android.arch.lifecycle:extensions:$lifecycle_version"
-    implementation "com.afollestad.material-dialogs:core:0.9.5.0"
-    implementation "com.akexorcist:RoundCornerProgressBar:2.0.3"
+    implementation 'com.afollestad.material-dialogs:core:0.9.5.0'
+    implementation 'com.akexorcist:RoundCornerProgressBar:2.0.3'
     implementation "com.android.support:appcompat-v7:$compat_version"
     implementation "com.android.support:design:$compat_version"
     implementation "com.android.support:support-v4:$compat_version"
-    implementation "com.android.support.constraint:constraint-layout:1.1.0-beta3"
-    implementation "com.chibatching.kotpref:kotpref:2.2.0"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta3'
+    implementation 'com.chibatching.kotpref:kotpref:2.2.0'
     implementation('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
         transitive = true
     }
     implementation 'com.github.bumptech.glide:glide:4.4.0'
     implementation "com.google.firebase:firebase-core:$firebase_version"
     implementation "com.google.firebase:firebase-database:$firebase_version"
-    implementation "com.mikepenz:google-material-typeface:3.0.1.0.original@aar"
-    implementation "com.mikepenz:iconics-core:2.9.3@aar"
-    implementation "com.mikepenz:iconics-views:2.9.3@aar"
-    implementation("com.mikepenz:materialdrawer:5.9.5@aar") { transitive = true }
-    implementation "com.parse.bolts:bolts-tasks:1.4.0"
-    implementation "org.greenrobot:eventbus:3.0.0"
+    implementation 'com.mikepenz:google-material-typeface:3.0.1.0.original@aar'
+    implementation 'com.mikepenz:iconics-core:3.0.0@aar'
+    implementation 'com.mikepenz:iconics-views:3.0.0@aar'
+    implementation('com.mikepenz:materialdrawer:5.9.5@aar') { transitive = true }
+    implementation 'com.parse.bolts:bolts-tasks:1.4.0'
+    implementation 'org.greenrobot:eventbus:3.0.0'
     implementation "org.jetbrains.anko:anko:$anko_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     kapt "android.arch.lifecycle:compiler:$lifecycle_version"
     kapt 'com.github.bumptech.glide:compiler:4.4.0'
- }
+
+
+}
 
 
 apply plugin: 'com.google.gms.google-services'

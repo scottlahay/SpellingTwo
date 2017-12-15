@@ -53,6 +53,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var drawer: Drawer
     lateinit var viewModel: SpellingViewModel
     lateinit var badgeStyle: BadgeStyle
+    var usualTitle = ""
     var mainPages = mutableListOf<Page>()
     var closeApp: DialogInterface.OnClickListener = DialogInterface.OnClickListener { _, _ -> finish() }
 
@@ -84,10 +85,12 @@ class MainActivity : AppCompatActivity() {
         viewModel.selectGrade.observe(this, Observer<List<String>> { it?.let { it1 -> launchGradeChanger(it1) } })
         mainPages.addAll(listOf(Page(MainPage.ABOUT, layoutAbout), Page(MainPage.LANDING, layoutLanding), Page(MainPage.TEST, layoutSpellingTest)))
         setBackgroundImageOnTheAboutPage()
+
     }
 
-    private fun setTitle(it1: String) {
-        title = it1
+    private fun setTitle(week: String) {
+        usualTitle = week
+        title = week
     }
 
     fun setBackgroundImageOnTheAboutPage() {
@@ -104,7 +107,7 @@ class MainActivity : AppCompatActivity() {
             page.view.visibility = if (page.key == mainPage) View.VISIBLE else View.GONE
         }
         if (MainPage.ABOUT == mainPage) {
-            title = "About"
+            title = "Skipstone Studios"
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         }
         else
@@ -127,16 +130,15 @@ class MainActivity : AppCompatActivity() {
     fun changeGrade(view: View) = viewModel.launchGradeChanger()
     fun start(view: View) = viewModel.go()
 
-    fun drawer(text: String, badge: String) = drawer(text).withBadge(badge)!!
-    fun drawer(text: String) = PrimaryDrawerItem().withName(text)!!
-
     fun initUi() {
         badgeStyle = BadgeStyle().withColorRes(R.color.primaryColor).withTextColorRes(R.color.primaryTextColor)
         imgCheck!!.icon!!.icon(GoogleMaterial.Icon.gmd_check)
         initTheKeyboard()
-        waitForTheProgramToLoad()
         textSwitchStuff()
     }
+
+    fun drawer(text: String, badge: String) = drawer(text).withBadge(badge)!!
+    fun drawer(text: String) = PrimaryDrawerItem().withName(text)!!
 
     fun changeDrawerData(items: List<String>) {
         drawer = DrawerBuilder()
@@ -145,7 +147,7 @@ class MainActivity : AppCompatActivity() {
                 .withToolbar(myToolbar)
                 .withHeader(R.layout.my_material_drawer)
                 .withSelectedItemByPosition(2)
-                .addDrawerItems(drawer("Start Over"), drawer("Grade", items[0]), drawer("Week", items[1]), drawer("About"))
+                .addDrawerItems(drawer("Home"), drawer("Grade", items[0]), drawer("Week", items[1]), drawer("About"))
                 .withOnDrawerItemClickListener { _, position, _ ->
                     when (position) {
                         1 -> viewModel.goToLandingPage()
@@ -175,9 +177,6 @@ class MainActivity : AppCompatActivity() {
     fun shiftKeyboard(shifted: Boolean) {
         keyboard.isShifted = shifted
         keyboardView!!.invalidateAllKeys()
-    }
-
-    fun waitForTheProgramToLoad() {
     }
 
     fun launchWeekChanger(weeks: List<String>) {
@@ -248,9 +247,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun launchWebsite(view: View) {
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://skipstone.net")))
-    }
+    fun launchWebsite(view: View) = startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://skipstone.net")))
 
     inner class MyKeyPressListener : ScottsKeyPressListener() {
         override fun onPress(primaryCode: Int) {
