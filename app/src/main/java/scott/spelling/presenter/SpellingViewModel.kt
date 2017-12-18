@@ -29,7 +29,6 @@ class SpellingViewModel : ViewModel() {
     val completionProgress: MutableLiveData<Int> = MutableLiveData()
     val showPopup: MutableLiveData<BasicDialogDetails> = MutableLiveData()
     val shiftKeyboard: MutableLiveData<Boolean> = MutableLiveData()
-    val changeDrawerData: MutableLiveData<List<String>> = MutableLiveData()
     val selectGrade: MutableLiveData<List<String>> = MutableLiveData()
     val selectWeek: MutableLiveData<List<String>> = MutableLiveData()
 
@@ -52,9 +51,8 @@ class SpellingViewModel : ViewModel() {
     }
 
     fun currentInfo() {
-        landingGradeTitle.value = "Grade ${grades.currentGrade().name}"
-        landingWeekTitle.value = "Week ${grades.currentWeek().name}"
-        changeDrawerData.value = listOf(grades.currentGrade().name, grades.currentWeek().name)
+        landingGradeTitle.value = grades.currentGrade().name
+        landingWeekTitle.value = grades.currentWeek().name
         appTitle.value = "Week ${grades.currentWeek().name}"
     }
 
@@ -115,10 +113,7 @@ class SpellingViewModel : ViewModel() {
                 }
             }
         }
-
-
     }
-
 
     companion object {
         val CAPS_KEY = (-1).toChar()
@@ -126,21 +121,25 @@ class SpellingViewModel : ViewModel() {
         val HINT_KEY = (-5).toChar()
     }
 
-    fun goToLandingPage() {
+    fun goToLandingPage(): Boolean {
         grades.currentWeek().reset()
         showPage.value = MainPage.LANDING
+        return true
     }
 
-    fun launchGradeChanger() {
+    fun launchGradeChanger(): Boolean {
         selectGrade.value = grades.gradeNames()
+        return true
     }
 
-    fun launchWeekChanger() {
+    fun launchWeekChanger(): Boolean {
         selectWeek.value = grades.currentGrade().weekNames()
+        return true
     }
 
-    fun launchAboutPage() {
+    fun launchAboutPage(): Boolean {
         showPage.value = MainPage.ABOUT
+        return true
     }
 
 }

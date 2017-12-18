@@ -23,6 +23,8 @@ import android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
 import android.view.animation.AnimationUtils.loadAnimation
 import android.widget.TextView
 import co.zsmb.materialdrawerkt.builders.drawer
+import co.zsmb.materialdrawerkt.draweritems.badge
+import co.zsmb.materialdrawerkt.draweritems.badgeable.primaryItem
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.module.AppGlideModule
@@ -31,9 +33,8 @@ import com.bumptech.glide.request.transition.Transition
 import com.chibatching.kotpref.Kotpref
 import com.mikepenz.google_material_typeface_library.GoogleMaterial
 import com.mikepenz.materialdrawer.Drawer
-import com.mikepenz.materialdrawer.DrawerBuilder
 import com.mikepenz.materialdrawer.holder.BadgeStyle
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
+import com.mikepenz.materialdrawer.holder.StringHolder
 import kotlinx.android.synthetic.main.about.*
 import kotlinx.android.synthetic.main.activity_spelling.*
 import kotlinx.android.synthetic.main.landing_page.*
@@ -51,9 +52,9 @@ class MyAppGlideModule : AppGlideModule()
 class MainActivity : AppCompatActivity() {
 
     lateinit var keyboard: Keyboard
-    lateinit var drawer: Drawer
     lateinit var viewModel: SpellingViewModel
     lateinit var badgeStyle: BadgeStyle
+    lateinit var drawer: Drawer
     var usualTitle = ""
     var mainPages = mutableListOf<Page>()
     var closeApp: DialogInterface.OnClickListener = DialogInterface.OnClickListener { _, _ -> finish() }
@@ -71,8 +72,8 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(myToolbar)
         initUi()
         viewModel = ViewModelProviders.of(this).get(SpellingViewModel::class.java)
-        viewModel.landingGradeTitle.observe(this, Observer<String> { it?.let { it1 -> setGrade(it1) } })
-        viewModel.landingWeekTitle.observe(this, Observer<String> { it?.let { it1 -> txtWeek.text = it1 } })
+        viewModel.landingGradeTitle.observe(this, Observer<String> { it?.let { grade -> setGrade(grade) } })
+        viewModel.landingWeekTitle.observe(this, Observer<String> { it?.let { week -> txtWeek.text = "Week $week"; updateBadge(week, 2) } })
         viewModel.appTitle.observe(this, Observer<String> { it?.let { it1 -> setTitle(it1) } })
         viewModel.showPage.observe(this, Observer<MainPage> { it?.let { it1 -> showPage(it1) } })
         viewModel.answerText.observe(this, Observer<String> { it?.let { it1 -> swtAnswer!!.setCurrentText(it1) } })
@@ -81,12 +82,12 @@ class MainActivity : AppCompatActivity() {
         viewModel.completionProgress.observe(this, Observer<Int> { it?.let { it1 -> prgListProgress!!.progress = it1.toFloat() } })
         viewModel.showPopup.observe(this, Observer<BasicDialogDetails> { it?.let { it1 -> showPopup(it1) } })
         viewModel.shiftKeyboard.observe(this, Observer<Boolean> { it?.let { it1 -> shiftKeyboard(it1) } })
-        viewModel.changeDrawerData.observe(this, Observer<List<String>> { it?.let { it1 -> changeDrawerData(it1) } })
+//        viewModel.changeDrawerData.observe(this, Observer<List<String>> { it?.let { it1 -> changeDrawerData(it1) } })
         viewModel.selectWeek.observe(this, Observer<List<String>> { it?.let { it1 -> launchWeekChanger(it1) } })
         viewModel.selectGrade.observe(this, Observer<List<String>> { it?.let { it1 -> launchGradeChanger(it1) } })
         mainPages.addAll(listOf(Page(MainPage.ABOUT, layoutAbout), Page(MainPage.LANDING, layoutLanding), Page(MainPage.TEST, layoutSpellingTest)))
         setBackgroundImageOnTheAboutPage()
-
+        changeDrawerData()
     }
 
     private fun setTitle(week: String) {
@@ -116,7 +117,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setGrade(grade: String) {
-        txtGrade.text = grade
+        updateBadge(grade, 1)
+        txtGrade.text = "Grade $grade"
         prgLoading.visibility = GONE
         txtGrade.visibility = VISIBLE
         txtWeek.visibility = VISIBLE
@@ -124,6 +126,12 @@ class MainActivity : AppCompatActivity() {
         btnChangeWeek.visibility = VISIBLE
         btnStart.visibility = VISIBLE
         txtPracticeLabel.text = "Practice Makes Perfect"
+    }
+
+    private fun updateBadge(text: String, id: Long) {
+        if (::drawer.isInitialized) {
+            drawer.updateBadge(id, StringHolder(text))
+        }
     }
 
     fun showPopup(details: BasicDialogDetails) = showPopUp(details.title, details.text, details)
@@ -138,30 +146,25 @@ class MainActivity : AppCompatActivity() {
         textSwitchStuff()
     }
 
-    fun drawer(text: String, badge: String) = drawer(text).withBadge(badge)!!
-    fun drawer(text: String) = PrimaryDrawerItem().withName(text)!!
+    // hmm change the theme to? so that stuff is visible?
+    fun changeDrawerData() {
+        drawer = drawer {
+            widthDp = 150
+            toolbar = myToolbar
+            primaryItem("Home") { onClick { _ -> viewModel.goToLandingPage(); } }
+            primaryItem("Grade") {
+                identifier = 1
+                onClick { _ -> viewModel.launchGradeChanger() }
+                badge("0") { colorRes = R.color.primaryColor; textColorRes = R.color.primaryTextColor }
+            }
+            primaryItem("Week") {
+                identifier = 2
+                onClick { _ -> viewModel.launchWeekChanger() }
+                badge("0") { colorRes = R.color.primaryColor; textColorRes = R.color.primaryTextColor }
+            }
+            primaryItem("About") { onClick { _ -> viewModel.launchAboutPage() } }
 
-    fun changeDrawerData(items: List<String>) {
-        drawer {}
-    }
-
-    fun changeDrawerDataOld(items: List<String>) {
-        drawer = DrawerBuilder()
-                .withActivity(this)
-                .withDrawerWidthDp(150)
-                .withToolbar(myToolbar)
-                .withHeader(R.layout.my_material_drawer)
-                .withSelectedItemByPosition(2)
-                .addDrawerItems(drawer("Home"), drawer("Grade", items[0]), drawer("Week", items[1]), drawer("About"))
-                .withOnDrawerItemClickListener { _, position, _ ->
-                    when (position) {
-                        1 -> viewModel.goToLandingPage()
-                        2 -> viewModel.launchGradeChanger()
-                        3 -> viewModel.launchWeekChanger()
-                        4 -> viewModel.launchAboutPage()
-                    }
-                    false
-                }.build()
+        }
     }
 
     fun initTheKeyboard() {
