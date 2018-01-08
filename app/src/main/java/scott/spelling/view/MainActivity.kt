@@ -50,7 +50,7 @@ import scott.spelling.presenter.SpellingViewModel
 class MyAppGlideModule : AppGlideModule()
 
 class MainActivity : AppCompatActivity() {
-
+    // view switching should be better, so that back button is consistent, and titles are updated appropriately
     lateinit var keyboard: Keyboard
     lateinit var viewModel: SpellingViewModel
     lateinit var badgeStyle: BadgeStyle
