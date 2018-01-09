@@ -56,14 +56,6 @@ class SpellingViewModel : ViewModel() {
         appTitle.value = "Week ${grades.currentWeek().name}"
     }
 
-    fun go() {
-        appTitle.value = "Week ${grades.currentWeek().name}"
-        showPage.value = MainPage.TEST
-        progressVisible.value = false
-        updateText("")
-        showHint()
-    }
-
     fun showHint() {
         showPopup.value = Hint(this, "Spell", grades.currentWord())
     }
@@ -121,25 +113,32 @@ class SpellingViewModel : ViewModel() {
         val HINT_KEY = (-5).toChar()
     }
 
-    fun goToLandingPage(): Boolean {
+    fun goToTestPage() {
+        appTitle.value = "Week ${grades.currentWeek().name}"
+        showPage.value = MainPage.TEST
+        progressVisible.value = false
+        updateText("")
+        showHint()
+    }
+
+    fun goToLandingPage() {
+        appTitle.value = "Week ${grades.currentWeek().name}"
         grades.currentWeek().reset()
         showPage.value = MainPage.LANDING
-        return true
     }
 
-    fun launchGradeChanger(): Boolean {
-        selectGrade.value = grades.gradeNames()
-        return true
-    }
-
-    fun launchWeekChanger(): Boolean {
-        selectWeek.value = grades.currentGrade().weekNames()
-        return true
-    }
-
-    fun launchAboutPage(): Boolean {
+    fun goToAboutPage() {
         showPage.value = MainPage.ABOUT
-        return true
+        appTitle.value = "Skipstone Studios"
+
+    }
+
+    fun launchGradeChanger() {
+        selectGrade.value = grades.gradeNames()
+    }
+
+    fun launchWeekChanger() {
+        selectWeek.value = grades.currentGrade().weekNames()
     }
 
 }

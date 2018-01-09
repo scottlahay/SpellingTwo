@@ -23,7 +23,6 @@ class FirebaseRepository(val viewModel: SpellingViewModel) {
     }
 
     init {
-        db.setPersistenceEnabled(true)
 //        db.getReference(key).setValue(FirebaseStockTheDatabase.grades)  //uncomment this to Update Firebase Database
         db.getReference(key).orderByKey().addValueEventListener(gradesListener)
     }

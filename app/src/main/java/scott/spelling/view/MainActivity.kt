@@ -17,9 +17,7 @@ import android.view.Gravity.CENTER
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.Window.FEATURE_NO_TITLE
-import android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
-import android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+import android.view.WindowManager
 import android.view.animation.AnimationUtils.loadAnimation
 import android.widget.TextView
 import co.zsmb.materialdrawerkt.builders.drawer
@@ -49,8 +47,8 @@ import scott.spelling.presenter.SpellingViewModel
 @GlideModule
 class MyAppGlideModule : AppGlideModule()
 
+@Suppress("UNUSED_PARAMETER")
 class MainActivity : AppCompatActivity() {
-    // view switching should be better, so that back button is consistent, and titles are updated appropriately
     lateinit var keyboard: Keyboard
     lateinit var viewModel: SpellingViewModel
     lateinit var badgeStyle: BadgeStyle
@@ -64,12 +62,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        Kotpref.init(this)
-        requestWindowFeature(FEATURE_NO_TITLE)
-        window.setFlags(FLAG_FULLSCREEN, FLAG_FULLSCREEN)
-        window.setSoftInputMode(SOFT_INPUT_STATE_ALWAYS_HIDDEN)
         setContentView(activity_spelling)
         setSupportActionBar(myToolbar)
+        Kotpref.init(this)
         initUi()
         viewModel = ViewModelProviders.of(this).get(SpellingViewModel::class.java)
         viewModel.landingGradeTitle.observe(this, Observer<String> { it?.let { grade -> setGrade(grade) } })
@@ -88,32 +83,52 @@ class MainActivity : AppCompatActivity() {
         mainPages.addAll(listOf(Page(MainPage.ABOUT, layoutAbout), Page(MainPage.LANDING, layoutLanding), Page(MainPage.TEST, layoutSpellingTest)))
         setBackgroundImageOnTheAboutPage()
         changeDrawerData()
+        window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        hideSystemUI()
     }
 
-    private fun setTitle(week: String) {
+    fun hideSystemUI() {
+        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_FULLSCREEN
+                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
+    }
+
+    fun setTitle(week: String) {
         usualTitle = week
         title = week
     }
 
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) {
+            hideSystemUI()
+        }
+    }
+
     fun setBackgroundImageOnTheAboutPage() {
         GlideApp.with(this).load(R.drawable.skipstone).into(object : SimpleTarget<Drawable>() {
-            override fun onResourceReady(resource: Drawable?, transition: Transition<in Drawable>?) {
+            override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
                 layoutAboutBackground.background = resource
             }
+
         })
     }
 
-    fun showPage(mainPage: MainPage) {
+    override fun onBackPressed() {
+        when {
+            drawer.isDrawerOpen                 -> drawer.closeDrawer()
+            layoutLanding.visibility == VISIBLE -> super.onBackPressed()
+            else                                -> viewModel.goToLandingPage()
+        }
+    }
 
+    fun showPage(currentPage: MainPage) {
         for (page in mainPages) {
-            page.view.visibility = if (page.key == mainPage) View.VISIBLE else View.GONE
+            page.view.visibility = if (page.key == currentPage) View.VISIBLE else View.GONE
         }
-        if (MainPage.ABOUT == mainPage) {
-            title = "Skipstone Studios"
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        }
-        else
-            supportActionBar!!.setDisplayHomeAsUpEnabled(false)
     }
 
     fun setGrade(grade: String) {
@@ -137,7 +152,7 @@ class MainActivity : AppCompatActivity() {
     fun showPopup(details: BasicDialogDetails) = showPopUp(details.title, details.text, details)
     fun changeWeek(view: View) = viewModel.launchWeekChanger()
     fun changeGrade(view: View) = viewModel.launchGradeChanger()
-    fun start(view: View) = viewModel.go()
+    fun start(view: View) = viewModel.goToTestPage()
 
     fun initUi() {
         badgeStyle = BadgeStyle().withColorRes(R.color.primaryColor).withTextColorRes(R.color.primaryTextColor)
@@ -146,23 +161,22 @@ class MainActivity : AppCompatActivity() {
         textSwitchStuff()
     }
 
-    // hmm change the theme to? so that stuff is visible?
     fun changeDrawerData() {
         drawer = drawer {
             widthDp = 150
             toolbar = myToolbar
-            primaryItem("Home") { onClick { _ -> viewModel.goToLandingPage(); } }
+            primaryItem("Home") { onClick { _ -> viewModel.goToLandingPage(); drawer.closeDrawer(); true } }
             primaryItem("Grade") {
                 identifier = 1
-                onClick { _ -> viewModel.launchGradeChanger() }
+                onClick { _ -> viewModel.launchGradeChanger(); drawer.closeDrawer(); true }
                 badge("0") { colorRes = R.color.primaryColor; textColorRes = R.color.primaryTextColor }
             }
             primaryItem("Week") {
                 identifier = 2
-                onClick { _ -> viewModel.launchWeekChanger() }
+                onClick { _ -> viewModel.launchWeekChanger(); drawer.closeDrawer(); true }
                 badge("0") { colorRes = R.color.primaryColor; textColorRes = R.color.primaryTextColor }
             }
-            primaryItem("About") { onClick { _ -> viewModel.launchAboutPage() } }
+            primaryItem("About") { onClick { _ -> viewModel.goToAboutPage(); drawer.closeDrawer(); true } }
 
         }
     }
@@ -221,17 +235,6 @@ class MainActivity : AppCompatActivity() {
             view.textSize = 40f
             view.gravity = CENTER
         }
-    }
-
-    fun popUpYouFinished() {
-        MaterialDialog.Builder(this)
-                .title("Finished!")
-                .positiveText("Try Again")
-                .onPositive { _, _ -> viewModel.startOver() }
-                .negativeText("Exit")
-                .onNegative { _, _ -> finish() }
-                .cancelable(false)
-                .show()
     }
 
     fun textSwitchStuff() {
