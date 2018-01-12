@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         Kotpref.init(this)
         initUi()
         viewModel = ViewModelProviders.of(this).get(SpellingViewModel::class.java)
-        viewModel.landingGradeTitle.observe(this, Observer<String> { it?.let { grade -> setGrade(grade) } })
+        viewModel.landingGradeTitle.observe(this, Observer<String> { it?.let { setGrade(it) } })
         viewModel.landingWeekTitle.observe(this, Observer<String> { it?.let { week -> txtWeek.text = "Week $week"; updateBadge(week, 2) } })
         viewModel.appTitle.observe(this, Observer<String> { it?.let { it1 -> setTitle(it1) } })
         viewModel.showPage.observe(this, Observer<MainPage> { it?.let { it1 -> showPage(it1) } })
@@ -77,12 +77,11 @@ class MainActivity : AppCompatActivity() {
         viewModel.completionProgress.observe(this, Observer<Int> { it?.let { it1 -> prgListProgress!!.progress = it1.toFloat() } })
         viewModel.showPopup.observe(this, Observer<BasicDialogDetails> { it?.let { it1 -> showPopup(it1) } })
         viewModel.shiftKeyboard.observe(this, Observer<Boolean> { it?.let { it1 -> shiftKeyboard(it1) } })
-//        viewModel.changeDrawerData.observe(this, Observer<List<String>> { it?.let { it1 -> changeDrawerData(it1) } })
         viewModel.selectWeek.observe(this, Observer<List<String>> { it?.let { it1 -> launchWeekChanger(it1) } })
         viewModel.selectGrade.observe(this, Observer<List<String>> { it?.let { it1 -> launchGradeChanger(it1) } })
         mainPages.addAll(listOf(Page(MainPage.ABOUT, layoutAbout), Page(MainPage.LANDING, layoutLanding), Page(MainPage.TEST, layoutSpellingTest)))
         setBackgroundImageOnTheAboutPage()
-        changeDrawerData()
+        buildDrawer()
         window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         hideSystemUI()
     }
@@ -161,7 +160,7 @@ class MainActivity : AppCompatActivity() {
         textSwitchStuff()
     }
 
-    fun changeDrawerData() {
+    fun buildDrawer() {
         drawer = drawer {
             widthDp = 150
             toolbar = myToolbar

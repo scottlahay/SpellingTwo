@@ -2,23 +2,21 @@ package scott.spelling.model
 
 import com.google.firebase.database.Exclude
 
-class Grade(val name: String = "", val weeks: List<Week> = ArrayList<Week>()) {
+data class Grade(val grade: String = "", val weeks: MutableList<Week> = ArrayList<Week>()) {
 
-    @get:Exclude
+    @get:Exclude // from firebase
     var current: Int = 0
 
     fun currentWeek() = weeks[current]
+    fun changeWeek(name: String) = weeks.forEachIndexed { index, week -> if (week.week == name) current = index }
 
     fun weekNames(): ArrayList<String> {
         val names = ArrayList<String>()
-        weeks.forEach { names.add(it.name) }
+        weeks.forEach { names.add(it.week) }
         return names
     }
 
-    fun empty() = weeks.isEmpty()
+    fun add(week: Week) = weeks.add(week)
 
-    fun changeWeek(name: String) {
-        weeks.forEachIndexed { index, week -> if (week.name == name) current = index }
-    }
-
+    fun sortWeeksByIndex() = weeks.sortBy { it.week.toInt() }
 }

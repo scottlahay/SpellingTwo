@@ -5,7 +5,7 @@ import java.util.*;
 public class Utils {
     @SafeVarargs
     public static <T> List<T> asList(T... items) {
-        List<T> list = new ArrayList<>();
+        List<T> list = new ArrayList<>(25);
         list.addAll(Arrays.asList(items));
         return list;
     }

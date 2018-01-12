@@ -1,23 +1,32 @@
 package scott.spelling.presenter
 
+import android.app.Application
+import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
 import com.chibatching.kotpref.KotprefModel
+import scott.spelling.BuildConfig
+import scott.spelling.R
 import scott.spelling.model.Grades
 import scott.spelling.system.FirebaseRepository
 
 enum class MainPage { ABOUT, TEST, LANDING }
 
-class SpellingViewModel : ViewModel() {
+class SpellingViewModel(application: Application) : AndroidViewModel(application) {
 
     var grades: Grades = Grades()
         set(value) {
             field = value
+            field.changeGrade(UserPreferences.grade)
+            field.changeWeek(UserPreferences.week)
             currentInfo()
         }
 
-    var setAsCap = false
+    fun addWordsToApp() {
 
+    }
+
+    var setAsCap = false
+    var aboutPageTitle: String
     val landingGradeTitle: MutableLiveData<String> = MutableLiveData()
     val landingWeekTitle: MutableLiveData<String> = MutableLiveData()
     val appTitle: MutableLiveData<String> = MutableLiveData()
@@ -34,6 +43,7 @@ class SpellingViewModel : ViewModel() {
 
     init {
         FirebaseRepository(this)
+        aboutPageTitle = "${application.getString(R.string.app_name)} app - version ${BuildConfig.VERSION_CODE}"
     }
 
     fun setGrade(name: String) {
@@ -50,10 +60,10 @@ class SpellingViewModel : ViewModel() {
         goToLandingPage()
     }
 
-    fun currentInfo() {
-        landingGradeTitle.value = grades.currentGrade().name
-        landingWeekTitle.value = grades.currentWeek().name
-        appTitle.value = "Week ${grades.currentWeek().name}"
+    fun currentInfo() {  // this should be initializing any changes the user has made when the app loads
+        landingGradeTitle.value = grades.currentGrade().grade
+        landingWeekTitle.value = grades.currentWeek().week
+        appTitle.value = "Week ${grades.currentWeek().week}"
     }
 
     fun showHint() {
@@ -63,12 +73,6 @@ class SpellingViewModel : ViewModel() {
     fun updateText(updatedText: String) {
         answerText.value = updatedText
         completionProgress.value = grades.currentGrade().currentWeek().primaryProgress()
-    }
-
-    fun startOver() {
-        grades.currentGrade().currentWeek().setAtStart()
-        updateText("")
-        showHint()
     }
 
     fun keyPressed(unicodeChar: Char) {
@@ -101,7 +105,6 @@ class SpellingViewModel : ViewModel() {
                 else {
                     grades.currentWeek().nextWord()
                     showHint()
-
                 }
             }
         }
@@ -114,7 +117,7 @@ class SpellingViewModel : ViewModel() {
     }
 
     fun goToTestPage() {
-        appTitle.value = "Week ${grades.currentWeek().name}"
+        appTitle.value = "Week ${grades.currentWeek().week}"
         showPage.value = MainPage.TEST
         progressVisible.value = false
         updateText("")
@@ -122,15 +125,14 @@ class SpellingViewModel : ViewModel() {
     }
 
     fun goToLandingPage() {
-        appTitle.value = "Week ${grades.currentWeek().name}"
+        appTitle.value = "Week ${grades.currentWeek().week}"
         grades.currentWeek().reset()
         showPage.value = MainPage.LANDING
     }
 
     fun goToAboutPage() {
         showPage.value = MainPage.ABOUT
-        appTitle.value = "Skipstone Studios"
-
+        appTitle.value = aboutPageTitle
     }
 
     fun launchGradeChanger() {
