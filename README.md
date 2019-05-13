@@ -3,7 +3,8 @@
 ## Repository Setup
 
 ### Branches
-#### Master branch
+Master branch
+=============
 * is where we pull changes from https://github.com/vector-im/riot-android/tree/master  
 #### Develop: Main branch for RedPill-Chat
 * Release are done from this branch
