@@ -1,11 +1,18 @@
 # redpill-chat
 
-## Repository Setup
+## Branching Strategy
+There are 3 types of branches in the project are
+The Main branch called
+* develop
+The Control branch for pulling change from https://github.com/vector-im/riot-android/tree/master is
+* master
+A series of Feature branches that look like 
+* CSMC-29_Identify_and_remove_developer_tools
 
-### Branches
-Master branch
-=============
-* is where we pull changes from https://github.com/vector-im/riot-android/tree/master  
+General Development 
+Create a series 
+
+
 #### Develop: Main branch for RedPill-Chat
 * Release are done from this branch
 * Most features branches will be cloned from here
