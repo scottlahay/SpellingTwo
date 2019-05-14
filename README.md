@@ -12,7 +12,7 @@ There are 3 types of branches in the project
   - For example __CSMC-29_Identify_and_remove_developer_tools__
 - When Code complete, create a Merge request for the __develop__ branch
   - Assign it to a reviewer
-- When review is complete the code is merged into __develop __
+- When review is complete the code is merged into  __develop__
 
 ### Updating RedPill-Chat from Riot-Android
 #### Notes
