@@ -2,8 +2,8 @@
 
 ## Branching Strategy
 There are 3 types of branches in the project
-* The Main branch called
-⋅⋅* develop
+- The Main branch called
+  - develop
 * The branch for integrating changes from https://github.com/vector-im/riot-android/tree/master is
 ** master
 ** A series of Feature branches that look like 
