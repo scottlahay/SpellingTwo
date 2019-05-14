@@ -15,7 +15,10 @@ There are 3 types of branches in the project
 - When review is complete the code is merged into __develop __
 
 ### Updating RedPill-Chat from Riot-Android
-- Pull the latest code from __Riot-Android__ into master
-- Code Review Changes
-- Merge or Cherry Pick changes into Develop
+#### Strategy Overview
+We will try and move all code changes in Riot-Android to RedPill-Chat during active development. When we move to release testing we will stop pulling changes from Riot_Android except for critical bugs. If a Riot-Android change looks dangerous or difficult it can be ignored.
+#### How to
+- Pull the latest code from [Riot-Android/master](https://github.com/vector-im/riot-android/tree/master) into __master__
+- Code Review Changes for potential issues
+- Merge or Cherry Pick changes into __develop__
 
