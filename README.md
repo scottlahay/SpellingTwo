@@ -2,12 +2,9 @@
 
 ## Branching Strategy
 There are 3 types of branches in the project
-- The Main branch called
-  - develop
-- The branch for integrating changes from https://github.com/vector-im/riot-android/tree/master is
-  -  master
-- A series of Feature branches that look like 
-  - CSMC-29_Identify_and_remove_developer_tools
+- A single Main branch called _develop_
+- A single branch for integrating changes from https://github.com/vector-im/riot-android/tree/master called _master_
+- A series of Feature branches that look like _CSMC-29_Identify_and_remove_developer_tools_
 
 ### General RedPill-Chat development is done by 
 - creating a feature branch from develop
