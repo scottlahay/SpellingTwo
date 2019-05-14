@@ -1,22 +1,24 @@
 # redpill-chat
 
 ## Branching Strategy
-There are 3 types of branches in the project are
-The Main branch called
-* develop
-The Control branch for pulling change from https://github.com/vector-im/riot-android/tree/master is
-* master
-A series of Feature branches that look like 
+There are 3 types of branches in the project
+* The Main branch called
+** develop
+* The branch for integrating changes from https://github.com/vector-im/riot-android/tree/master is
+** master
+** A series of Feature branches that look like 
 * CSMC-29_Identify_and_remove_developer_tools
 
-General Development 
-Create a series 
+### General RedPill-Chat development is done by 
+* creating a feature branch from develop
+** use issue_ number_issue_title to name the branch
+*** for example CSMC-29_Identify_and_remove_developer_tools
+* When Code complete create a Merge request for the develop branch
+** assign it to a reviewer
+* When review is complete the code is merged into develop 
 
+### Updating RedPill-Chat from Riot-Android
+* pull the latest code from Riot-Android into master
+* Code Review Changes
+* Merge or Cherry Pick changes into Develop
 
-#### Develop: Main branch for RedPill-Chat
-* Release are done from this branch
-* Most features branches will be cloned from here
-* Riot-android changes that we want to use in RedPill-Chat are merged/cherry picked from master to this branch
-##### Feature Branches
-* Developer created branches for building out features
-* To be merged into develop when they pass Reviews and closed
