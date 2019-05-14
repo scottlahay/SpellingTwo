@@ -8,7 +8,7 @@ There are 3 types of branches in the project
 
 ### RedPill-Chat development is done by 
 - Creating a feature branch from __develop__
-  - Use __issue_ number_issue_title__ to name the branch
+  - Use __issue_number_issue_title__ to name the branch
   - For example __CSMC-29_Identify_and_remove_developer_tools__
 - When Code complete, create a Merge request for the __develop__ branch
   - Assign it to a reviewer
